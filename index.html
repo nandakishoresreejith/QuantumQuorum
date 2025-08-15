@@ -307,8 +307,8 @@
                         <button id="ask-question-header-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">
                             Ask Question
                         </button>
-                        <div id="user-avatar-container">
-                            <!-- User avatar will be loaded here -->
+                        <div id="user-auth-container" class="flex items-center space-x-2">
+                           <!-- Auth buttons or user avatar will be loaded here -->
                         </div>
                     </div>
                 </div>
@@ -343,6 +343,8 @@
     </div>
 
     <!-- Modals -->
+    <div id="signUpModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
+    <div id="logInModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="docViewerModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="summaryModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="askQuestionModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
@@ -373,6 +375,7 @@
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, collection, getDocs, getDoc, doc, addDoc, setDoc, updateDoc, deleteDoc, query, where, onSnapshot, serverTimestamp, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
@@ -389,19 +392,12 @@
         
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const db = getFirestore(app);
         const storage = getStorage(app);
 
         // App state
-        // Since we removed authentication, we'll use a static "guest" user object.
-        const currentUser = {
-            uid: 'guest-user-01',
-            name: 'Guest User',
-            description: 'Exploring the quantum realm!',
-            points: 0,
-            avatar: `https://placehold.co/64x64/9ca3af/ffffff?text=G`,
-            level: 'Guest',
-        };
+        let currentUser = null;
         let users = {}; // Local cache for user data
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -436,28 +432,59 @@
             };
             let pageHistory = [{page: 'home', id: null}];
 
-            // --- FUNCTION DEFINITIONS ---
-
-            function updateUserAvatar() {
-                const container = document.getElementById('user-avatar-container');
-                if (currentUser) {
-                    container.innerHTML = `<img src="${currentUser.avatar}" class="w-8 h-8 rounded-full cursor-pointer nav-link" data-page="userProfile" data-id="${currentUser.uid}" alt="${currentUser.name}">`;
+            // --- AUTHENTICATION ---
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    const userDocRef = doc(db, "users", user.uid);
+                    const userDocSnap = await getDoc(userDocRef);
+                    if (userDocSnap.exists()) {
+                        currentUser = { uid: user.uid, ...userDocSnap.data() };
+                    } else {
+                        // This case is handled during sign-up, but as a fallback:
+                        const newUserProfile = {
+                            name: `User-${user.uid.substring(0, 5)}`,
+                            email: user.email,
+                            joinDate: serverTimestamp(),
+                            avatar: `https://placehold.co/64x64/7c3aed/ffffff?text=${user.email[0].toUpperCase()}`,
+                            level: 'Beginner',
+                            points: 0,
+                        };
+                        await setDoc(userDocRef, newUserProfile);
+                        currentUser = { uid: user.uid, ...newUserProfile };
+                    }
                 } else {
-                    container.innerHTML = ''; // Or a login button
+                    currentUser = null;
+                }
+                updateUserAuthUI();
+                navigateTo('home'); // Re-render the current page with correct user context
+            });
+
+
+            function updateUserAuthUI() {
+                const container = document.getElementById('user-auth-container');
+                if (currentUser) {
+                    container.innerHTML = `
+                        <img src="${currentUser.avatar}" class="w-8 h-8 rounded-full cursor-pointer nav-link" data-page="userProfile" data-id="${currentUser.uid}" alt="${currentUser.name}">
+                        <button id="logout-btn" class="text-sm text-gray-400 hover:text-white">Logout</button>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <button id="login-btn" class="text-sm font-semibold text-white hover:underline">Log In</button>
+                        <button id="signup-btn" class="bg-gray-700 hover:bg-gray-600 text-white text-sm font-semibold py-2 px-3 rounded-md">Sign Up</button>
+                    `;
                 }
             }
-
+            
+            // --- DATA FETCHING FUNCTIONS ---
             async function fetchAllData() {
                 const usersSnapshot = await getDocs(collection(db, "users"));
                 users = {};
                 usersSnapshot.forEach(doc => {
                     users[doc.id] = { id: doc.id, ...doc.data() };
                 });
-                if (!users[currentUser.uid]) {
-                    users[currentUser.uid] = currentUser;
-                }
             }
 
+            // --- RENDER FUNCTIONS (Unchanged from previous version, but now rely on dynamic currentUser) ---
             async function renderHomePage(filterType = 'latest') {
                 const homePage = pageElements.home;
                 const sidebarCategories = document.getElementById('sidebar-categories');
@@ -542,6 +569,49 @@
                 });
             }
 
+            async function renderQuestionListPage(categoryId) {
+                const page = pageElements.questionList;
+                
+                const categoryDocRef = doc(db, "categories", categoryId);
+                const categoryDocSnap = await getDoc(categoryDocRef);
+                if (!categoryDocSnap.exists()) {
+                    page.innerHTML = `<h1 class="text-2xl font-bold text-red-500">Category not found</h1>`;
+                    return;
+                }
+                const category = categoryDocSnap.data();
+
+                const q = query(collection(db, "questions"), where("catId", "==", categoryId));
+                const querySnapshot = await getDocs(q);
+                const questions = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                page.innerHTML = `
+                    <div class="mb-6">
+                        <h1 class="text-3xl font-bold text-white">${category.name}</h1>
+                        <p class="text-gray-400 mt-1">${category.description}</p>
+                    </div>
+                    <div class="space-y-4">
+                        ${questions.length > 0 ? questions.map(question => {
+                            const author = users[question.authorId];
+                            return `
+                            <a href="#" class="block bg-gray-900/50 p-4 rounded-md hover:bg-gray-700/50 nav-link" data-page="questionDetail" data-id="${question.id}">
+                                <div class="flex items-center">
+                                    <img src="${author?.avatar || 'https://placehold.co/40x40'}" alt="${author?.name || 'Unknown'}" class="w-10 h-10 rounded-full mr-4">
+                                    <div class="flex-1">
+                                        <h3 class="font-semibold text-white">${question.title}</h3>
+                                        <p class="text-xs text-gray-400 mt-1">Asked by ${author?.name || 'Unknown'}</p>
+                                    </div>
+                                    <div class="text-center w-20">
+                                        <div class="font-bold text-white">${question.answers?.length || 0}</div>
+                                        <div class="text-xs text-gray-400">replies</div>
+                                    </div>
+                                </div>
+                            </a>
+                            `
+                        }).join('') : '<p class="text-gray-400">No questions in this category yet.</p>'}
+                    </div>
+                `;
+            }
+
             function renderQuestionDetailPage(questionId) {
                 const questionDocRef = doc(db, "questions", questionId);
                 
@@ -555,7 +625,7 @@
                     
                     const answersHTML = (q.answers || []).map((ans, index) => {
                         const ansAuthor = users[ans.by];
-                        if (!ansAuthor) return ''; // Skip if author data not loaded yet
+                        if (!ansAuthor) return '';
                         return `
                         <div class="flex space-x-4" data-answer-index="${index}">
                             <img src="${ansAuthor.avatar}" alt="${ansAuthor.name}" class="w-12 h-12 rounded-full">
@@ -564,8 +634,8 @@
                                 <div class="flex items-center justify-between mt-4 text-gray-400">
                                     <div class="flex items-center space-x-4">
                                         <button class="reply-to-answer-btn hover:text-white" data-username="${ansAuthor.name}">Reply</button>
-                                        <button class="like-btn flex items-center space-x-1 hover:text-red-400 ${ans.likes?.includes(currentUser.uid) ? 'liked' : ''}" data-question-id="${q.id}" data-answer-index="${index}">
-                                            <i class="fa-heart ${ans.likes?.includes(currentUser.uid) ? 'fas' : 'far'}"></i>
+                                        <button class="like-btn flex items-center space-x-1 hover:text-red-400 ${currentUser && ans.likes?.includes(currentUser.uid) ? 'liked' : ''}" data-question-id="${q.id}" data-answer-index="${index}">
+                                            <i class="fa-heart ${currentUser && ans.likes?.includes(currentUser.uid) ? 'fas' : 'far'}"></i>
                                             <span>${ans.likes?.length || 0}</span>
                                         </button>
                                     </div>
@@ -583,7 +653,7 @@
                                 <img src="${author?.avatar}" alt="${author?.name}" class="w-12 h-12 rounded-full">
                                 <div class="flex-1 bg-gray-900/50 p-4 rounded-md">
                                     <p>${q.body}</p>
-                                    ${q.authorId === currentUser.uid ? `
+                                    ${currentUser && q.authorId === currentUser.uid ? `
                                         <div class="mt-4 text-right">
                                             <button class="edit-question-btn text-xs text-blue-400 hover:underline mr-4" data-id="${q.id}">Edit</button>
                                             <button class="delete-question-btn text-xs text-red-400 hover:underline" data-id="${q.id}">Delete</button>
@@ -592,7 +662,7 @@
                                 </div>
                             </div>
                             ${answersHTML}
-                            <div class="flex space-x-4"><img src="${currentUser.avatar}" alt="Your avatar" class="w-12 h-12 rounded-full"><div class="flex-1 bg-gray-900/50 p-4 rounded-md"><textarea id="answer-textarea" class="w-full bg-gray-700 text-white rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="5" placeholder="Type your answer here..."></textarea><div class="text-right mt-2"><button class="post-answer-btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md" data-id="${q.id}">Post Answer</button></div></div></div>
+                            ${currentUser ? `<div class="flex space-x-4"><img src="${currentUser.avatar}" alt="Your avatar" class="w-12 h-12 rounded-full"><div class="flex-1 bg-gray-900/50 p-4 rounded-md"><textarea id="answer-textarea" class="w-full bg-gray-700 text-white rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="5" placeholder="Type your answer here..."></textarea><div class="text-right mt-2"><button class="post-answer-btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md" data-id="${q.id}">Post Answer</button></div></div></div>` : `<div class="text-center text-gray-400 bg-gray-900/50 p-4 rounded-md">Please <button class="font-bold text-white hover:underline" id="login-from-reply-btn">log in</button> to post a reply.</div>`}
                         </div>`;
                 });
             }
@@ -618,23 +688,15 @@
             }
 
             async function renderUserProfilePage(userId) {
-                let user;
-                if (userId === currentUser.uid) {
-                    user = currentUser;
-                } else {
-                    const userDocRef = doc(db, "users", userId);
-                    const userDocSnap = await getDoc(userDocRef);
-                    if (userDocSnap.exists()) {
-                        user = { id: userDocSnap.id, ...userDocSnap.data() };
-                    }
-                }
+                const userDocRef = doc(db, "users", userId);
+                const userDocSnap = await getDoc(userDocRef);
 
-                if (!user) {
+                if (!userDocSnap.exists()) {
                     pageElements.userProfile.innerHTML = `<h1 class="text-2xl font-bold text-red-500">User Not Found</h1>`;
                     return;
                 }
-                
-                const isCurrentUserProfile = user.id === currentUser.uid;
+                const user = { id: userDocSnap.id, ...userDocSnap.data() };
+                const isCurrentUserProfile = currentUser && user.id === currentUser.uid;
                 
                 const questionsQuery = query(collection(db, "questions"), where("authorId", "==", userId));
                 const questionsSnapshot = await getDocs(questionsQuery);
@@ -650,7 +712,7 @@
                                     <h2 class="text-2xl font-bold text-white">${user.name}</h2>
                                     <p class="text-gray-400">${user.level}</p>
                                 </div>
-                                ${isCurrentUserProfile ? `<button id="edit-profile-btn" class="bg-gray-600 text-white text-sm px-4 py-2 rounded-md cursor-not-allowed" title="Editing disabled without login">Edit Profile</button>` : ''}
+                                ${isCurrentUserProfile ? `<button id="edit-profile-btn" class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-md">Edit Profile</button>` : ''}
                             </div>
                             <div class="mt-6 border-t border-gray-700 pt-6">
                                 <p class="text-gray-300">${user.description || 'No description provided.'}</p>
@@ -700,7 +762,10 @@
             }
 
             function renderModals() {
-                document.getElementById('askQuestionModal').innerHTML = `<form class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-2xl"><h2 class="text-2xl font-bold text-white mb-4">Ask a Question</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Title</label><input type="text" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Category</label><select id="ask-question-category" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2"></select></div><div class="mb-4"><label class="block text-gray-400 mb-1">Body</label><textarea rows="6" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Post</button></div></form>`;
+                document.getElementById('signUpModal').innerHTML = `<form id="signup-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-md"><h2 class="text-2xl font-bold text-white mb-4">Create Account</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Email</label><input type="email" name="email" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Password</label><input type="password" name="password" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><p class="text-red-400 text-sm mb-4 h-5" id="signup-error"></p><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Sign Up</button></div></form>`;
+                document.getElementById('logInModal').innerHTML = `<form id="login-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-md"><h2 class="text-2xl font-bold text-white mb-4">Log In</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Email</label><input type="email" name="email" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Password</label><input type="password" name="password" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><p class="text-red-400 text-sm mb-4 h-5" id="login-error"></p><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Log In</button></div></form>`;
+                document.getElementById('editProfileModal').innerHTML = `<form id="edit-profile-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-2xl space-y-4"></form>`;
+                document.getElementById('askQuestionModal').innerHTML = `<form id="ask-question-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-2xl"><h2 class="text-2xl font-bold text-white mb-4">Ask a Question</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Title</label><input type="text" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Category</label><select id="ask-question-category" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2"></select></div><div class="mb-4"><label class="block text-gray-400 mb-1">Body</label><textarea rows="6" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Post</button></div></form>`;
                 document.getElementById('docViewerModal').innerHTML = `<div class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-4xl h-5/6 flex flex-col"><h2 id="doc-modal-title" class="text-2xl font-bold text-white mb-4">Document Viewer</h2><div id="doc-modal-content" class="flex-1 overflow-y-auto bg-gray-900/50 p-4 rounded prose prose-invert max-w-none"></div><div class="flex justify-end mt-4"><button type="button" class="modal-cancel-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Close</button></div></div>`;
                 document.getElementById('messageModal').innerHTML = `<div class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-md"><h3 id="message-modal-title" class="text-2xl font-bold text-white mb-4">Message</h3><p id="message-modal-content" class="text-gray-300 mb-6"></p><div class="flex justify-end"><button type="button" class="modal-cancel-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">OK</button></div></div>`;
             }
@@ -727,7 +792,14 @@
                 const targetPage = pageElements[pageKey] || pageElements.home;
                 targetPage.classList.add('active');
                 
-                document.querySelectorAll('.sidebar-link').forEach(link => { link.classList.remove('active'); if (link.dataset.page === pageKey) link.classList.add('active'); });
+                document.querySelectorAll('.sidebar-link').forEach(link => { 
+                    link.classList.remove('active'); 
+                    if (link.dataset.page === pageKey && link.dataset.id === dataId) {
+                        link.classList.add('active');
+                    } else if (link.dataset.page === pageKey && !link.dataset.id) {
+                         link.classList.add('active');
+                    }
+                });
                 
                 const backButton = document.querySelector('.go-back-btn');
                 backButton.style.display = (pageKey === 'home') ? 'none' : 'flex';
@@ -736,6 +808,7 @@
 
                 switch (pageKey) {
                     case 'home': await renderHomePage(); break;
+                    case 'questionList': await renderQuestionListPage(dataId); break;
                     case 'questionDetail': renderQuestionDetailPage(dataId); break;
                     case 'members': await renderMembersPage(); break;
                     case 'userProfile': await renderUserProfilePage(dataId); break;
@@ -760,7 +833,30 @@
                 const modalCancelBtn = e.target.closest('.modal-cancel-btn');
                 if (modalCancelBtn) { modalCancelBtn.closest('.fixed').classList.replace('flex', 'hidden'); }
                 
+                if (e.target.id === 'signup-btn') { document.getElementById('signUpModal').classList.replace('hidden', 'flex'); }
+                if (e.target.id === 'login-btn' || e.target.id === 'login-from-reply-btn') { document.getElementById('logInModal').classList.replace('hidden', 'flex'); }
+                if (e.target.id === 'logout-btn') { await signOut(auth); }
+
+                if (e.target.id === 'edit-profile-btn') {
+                    const form = document.getElementById('edit-profile-form');
+                    form.innerHTML = `
+                        <h2 class="text-2xl font-bold text-white">Edit Profile</h2>
+                        <div><label class="block text-gray-400 mb-1">Name</label><input type="text" name="name" class="w-full bg-gray-700 rounded p-2" value="${currentUser.name || ''}"></div>
+                        <div><label class="block text-gray-400 mb-1">College</label><input type="text" name="collegeName" class="w-full bg-gray-700 rounded p-2" value="${currentUser.collegeName || ''}"></div>
+                        <div><label class="block text-gray-400 mb-1">Department</label><input type="text" name="department" class="w-full bg-gray-700 rounded p-2" value="${currentUser.department || ''}"></div>
+                        <div><label class="block text-gray-400 mb-1">Class</label><input type="text" name="className" class="w-full bg-gray-700 rounded p-2" value="${currentUser.className || ''}"></div>
+                        <div><label class="block text-gray-400 mb-1">Mentor</label><input type="text" name="mentorName" class="w-full bg-gray-700 rounded p-2" value="${currentUser.mentorName || ''}"></div>
+                        <div><label class="block text-gray-400 mb-1">Collaboration</label><select name="wantsToCollaborate" class="w-full bg-gray-700 rounded p-2"><option value="true" ${currentUser.wantsToCollaborate ? 'selected' : ''}>Looking for collaboration</option><option value="false" ${!currentUser.wantsToCollaborate ? 'selected' : ''}>Not looking</option></select></div>
+                        <div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Save Changes</button></div>
+                    `;
+                    document.getElementById('editProfileModal').classList.replace('hidden', 'flex');
+                }
+
                 if (e.target.closest('#ask-question-header-btn')) { 
+                    if (!currentUser) {
+                        showMessage('Authentication Required', 'Please log in or sign up to ask a question.');
+                        return;
+                    }
                     const categorySelect = document.getElementById('ask-question-category');
                     const categoriesSnapshot = await getDocs(collection(db, "categories"));
                     categorySelect.innerHTML = categoriesSnapshot.docs.map(doc => `<option value="${doc.id}">${doc.data().name}</option>`).join('');
@@ -769,6 +865,7 @@
                 
                 const postAnswerBtn = e.target.closest('.post-answer-btn');
                 if (postAnswerBtn) {
+                    if (!currentUser) return; // Should not be visible if not logged in
                     const questionId = postAnswerBtn.dataset.id;
                     const answerText = document.getElementById('answer-textarea').value;
                     if (answerText.trim() !== '') {
@@ -786,6 +883,10 @@
 
                 const likeBtn = e.target.closest('.like-btn');
                 if (likeBtn) {
+                    if (!currentUser) {
+                        showMessage('Authentication Required', 'Please log in to like answers.');
+                        return;
+                    }
                     const questionId = likeBtn.dataset.questionId;
                     const answerIndex = parseInt(likeBtn.dataset.answerIndex);
                     const questionDocRef = doc(db, "questions", questionId);
@@ -803,36 +904,98 @@
                 }
             });
 
-            document.getElementById('askQuestionModal').addEventListener('submit', async e => {
-                e.preventDefault();
-                const form = e.target;
-                const title = form.querySelector('input[type="text"]').value;
-                const categoryId = form.querySelector('select').value;
-                const body = form.querySelector('textarea').value;
+            // Delegated Form Submission Listener
+            document.body.addEventListener('submit', async e => {
+                e.preventDefault(); 
 
-                if (title && categoryId && body) {
-                    const newQuestion = {
-                        catId: categoryId,
-                        title: title,
-                        body: body,
-                        authorId: currentUser.uid,
-                        votes: 0,
-                        answers: [],
-                        createdAt: serverTimestamp(),
-                        solved: false
-                    };
-                    const docRef = await addDoc(collection(db, "questions"), newQuestion);
-                    form.closest('.fixed').classList.replace('flex', 'hidden');
-                    form.reset();
-                    navigateTo('questionDetail', docRef.id);
+                switch(e.target.id) {
+                    case 'signup-form': {
+                        const email = e.target.email.value;
+                        const password = e.target.password.value;
+                        const errorEl = document.getElementById('signup-error');
+                        try {
+                            errorEl.textContent = '';
+                            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                            const user = userCredential.user;
+                            
+                            const newUserProfile = {
+                                name: `User-${user.uid.substring(0, 5)}`,
+                                email: user.email,
+                                joinDate: serverTimestamp(),
+                                avatar: `https://placehold.co/64x64/7c3aed/ffffff?text=${user.email[0].toUpperCase()}`,
+                                level: 'Beginner',
+                                points: 0,
+                            };
+                            await setDoc(doc(db, "users", user.uid), newUserProfile);
+                            
+                            document.getElementById('signUpModal').classList.replace('flex', 'hidden');
+                        } catch (error) {
+                            errorEl.textContent = error.message;
+                        }
+                        break;
+                    }
+                    case 'login-form': {
+                        const email = e.target.email.value;
+                        const password = e.target.password.value;
+                        const errorEl = document.getElementById('login-error');
+                        try {
+                            errorEl.textContent = '';
+                            await signInWithEmailAndPassword(auth, email, password);
+                            document.getElementById('logInModal').classList.replace('flex', 'hidden');
+                        } catch (error) {
+                            errorEl.textContent = "Invalid email or password.";
+                        }
+                        break;
+                    }
+                    case 'edit-profile-form': {
+                        if (!currentUser) return;
+                        const form = e.target;
+                        const updatedProfile = {
+                            name: form.name.value,
+                            collegeName: form.collegeName.value,
+                            department: form.department.value,
+                            className: form.className.value,
+                            mentorName: form.mentorName.value,
+                            wantsToCollaborate: form.wantsToCollaborate.value === 'true'
+                        };
+                        const userDocRef = doc(db, "users", currentUser.uid);
+                        await updateDoc(userDocRef, updatedProfile);
+                        currentUser = { ...currentUser, ...updatedProfile };
+                        document.getElementById('editProfileModal').classList.replace('flex', 'hidden');
+                        navigateTo('userProfile', currentUser.uid);
+                        break;
+                    }
+                    case 'ask-question-form': {
+                        if (!currentUser) return;
+                        const form = e.target;
+                        const title = form.querySelector('input[type="text"]').value;
+                        const categoryId = form.querySelector('select').value;
+                        const body = form.querySelector('textarea').value;
+                        if (title && categoryId && body) {
+                            const newQuestion = {
+                                catId: categoryId,
+                                title: title,
+                                body: body,
+                                authorId: currentUser.uid,
+                                votes: 0,
+                                answers: [],
+                                createdAt: serverTimestamp(),
+                                solved: false
+                            };
+                            const docRef = await addDoc(collection(db, "questions"), newQuestion);
+                            form.closest('.fixed').classList.replace('flex', 'hidden');
+                            form.reset();
+                            navigateTo('questionDetail', docRef.id);
+                        }
+                        break;
+                    }
                 }
             });
 
             // --- INITIALIZATION ---
-            updateUserAvatar();
             renderModals();
             renderHelperBot();
-            navigateTo('home');
+            // Initial UI update and navigation will happen inside onAuthStateChanged
         });
     </script>
 </body>
