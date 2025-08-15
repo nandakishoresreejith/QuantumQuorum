@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
         /* Custom styles for the Discourse-like theme */
@@ -41,6 +42,168 @@
         .vote-btn.active svg {
             color: #60a5fa; /* blue-400 */
         }
+        #helper-bot-container {
+            transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        #helper-bot-container.open {
+            transform: translateY(0);
+        }
+        .gate {
+            cursor: grab;
+        }
+        .circuit-line {
+            border-bottom: 2px solid #4b5563; /* gray-600 */
+            min-height: 50px;
+            position: relative;
+        }
+        .gate-placeholder {
+            position: absolute;
+        }
+        .leaderboard-link.active {
+            color: #fff;
+            border-bottom: 2px solid #fff;
+        }
+        
+        /* Message Container */
+        .message-container {
+            background-color: #1f2937;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        /* Message Header */
+        .message-header {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+        }
+        /* Individual Replies */
+        .reply-card {
+            border-left: 4px solid;
+            padding-left: 1rem;
+        }
+        .reply-card.border-blue-500 { border-color: #3b82f6; }
+        .reply-card.border-green-500 { border-color: #22c55e; }
+        .reply-card.border-yellow-500 { border-color: #f59e0b; }
+        .reply-card .user-info {
+            font-weight: bold;
+            color: #60a5fa;
+        }
+        .reply-card .reply-body {
+            color: #d1d5db;
+        }
+
+        /* Light Theme Overrides */
+        html:not(.dark) body {
+            background-color: #ffffff;
+            color: #1f2937;
+        }
+        html:not(.dark) .main-content {
+            background-color: #f3f4f6;
+        }
+        html:not(.dark) #sidebar,
+        html:not(.dark) header {
+            background-color: #f9fafb;
+            color: #1f2937;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        html:not(.dark) #sidebar .sidebar-link {
+             color: #4b5563;
+        }
+        html:not(.dark) .sidebar-link.active {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+        html:not(.dark) .sidebar-link:hover {
+            background-color: #e5e7eb;
+        }
+        html:not(.dark) .category-box,
+        html:not(.dark) .bg-gray-900\/50,
+        html:not(.dark) .message-container {
+            background-color: #ffffff;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+        }
+        html:not(.dark) .topic-link:hover {
+            background-color: #e5e7eb;
+        }
+        html:not(.dark) .leaderboard-link.active {
+            color: #1f2937;
+            border-color: #1f2937;
+        }
+        html:not(.dark) .border-gray-700 {
+            border-color: #e5e7eb;
+        }
+        html:not(.dark) .text-white,
+        html:not(.dark) .message-header,
+        html:not(.dark) .text-gray-200,
+        html:not(.dark) .text-gray-300 {
+            color: #1f2937;
+        }
+        html:not(.dark) .text-gray-400 {
+            color: #6b7280;
+        }
+        html:not(.dark) .text-gray-500 {
+            color: #9ca3af;
+        }
+        html:not(.dark) .bg-gray-800,
+        html:not(.dark) .bg-gray-700 {
+            background-color: #e5e7eb;
+        }
+        html:not(.dark) #search-input {
+            background-color: #e5e7eb;
+            color: #1f2937;
+            border: 1px solid #d1d5db;
+        }
+        html:not(.dark) #search-input::placeholder {
+            color: #9ca3af;
+        }
+        html:not(.dark) .go-back-btn {
+            color: #6b7280;
+        }
+        html:not(.dark) .go-back-btn:hover {
+            color: #1f2937;
+        }
+        html:not(.dark) input, html:not(.dark) textarea, html:not(.dark) select {
+            background-color: #f9fafb;
+            color: #1f2937;
+            border: 1px solid #d1d5db;
+        }
+        html:not(.dark) .prose-invert {
+            color: #1f2937;
+        }
+        html:not(.dark) .prose-invert h3 {
+            color: #1f2937;
+        }
+        html:not(.dark) pre {
+            background-color: #e5e7eb;
+            border: 1px solid #d1d5db;
+        }
+        html:not(.dark) code {
+            color: #1f2937;
+        }
+        /* Home page tabs styling */
+        .tab-btn {
+            @apply py-2 px-4 rounded-lg font-semibold border-2 border-transparent;
+        }
+        .tab-btn.tab-active {
+            @apply bg-blue-600 text-white border-blue-600;
+        }
+        .tab-btn:not(.tab-active) {
+            @apply bg-gray-700 text-gray-300 hover:bg-gray-600;
+        }
+        html:not(.dark) .tab-btn.tab-active {
+            @apply bg-indigo-600 text-white border-indigo-600;
+        }
+        html:not(.dark) .tab-btn:not(.tab-active) {
+            @apply bg-gray-300 text-gray-700 hover:bg-gray-200;
+        }
+        .like-btn.liked .fa-heart {
+            color: #ef4444; /* red-500 */
+            font-weight: 900; /* Solid heart */
+        }
     </style>
 </head>
 <body class="text-sm">
@@ -65,26 +228,30 @@
             <div>
                 <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Categories</h3>
                 <nav id="sidebar-categories" class="mt-2 space-y-1">
-                    <!-- Categories will be dynamically inserted here -->
+                    <!-- Categories will be dynamically inserted here from Firestore -->
                 </nav>
             </div>
 
             <div>
                 <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Resources</h3>
                 <nav class="mt-2 space-y-1">
+                    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="members">
+                        <i class="fa-solid fa-users w-5 h-5 mr-3"></i>
+                        Members
+                    </a>
                     <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="facultyCorner">
-                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21v-1a6 6 0 00-5.197-5.975M15 10a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21v-1a6 6 0 00-5.197-5.975M7 10a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                         Faculty Corner
                     </a>
                     <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="researchPapers">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         Research Papers
                     </a>
-                    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="docs">
+                     <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="docs">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                         Docs
                     </a>
-                     <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="news">
+                    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="news">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3h3m-3 4h3m-3 4h3m-3 4h3"></path></svg>
                         News
                     </a>
@@ -94,13 +261,44 @@
                     </a>
                 </nav>
             </div>
+            
+            <div>
+                <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Interactive</h3>
+                <nav class="mt-2 space-y-1">
+                    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="challenges">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4M17 3v4m2-2h-4m2 14h4m-2-2v4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 100-18 9 9 0 000 18z"></path></svg>
+                        Challenges
+                    </a>
+                    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="leaderboard">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        Leaderboard
+                    </a>
+                    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="projects">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                        Projects
+                    </a>
+                </nav>
+            </div>
+
+            <!-- New Settings Link -->
+            <div class="mt-auto">
+                <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="settings">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.82 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.82 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924-1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.82-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.82-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Settings
+                </a>
+            </div>
         </aside>
 
         <!-- Main Content -->
         <div class="flex-1 flex flex-col">
             <header class="bg-gray-900 flex-shrink-0">
                 <div class="flex items-center justify-between h-16 px-6">
-                    <div><!-- Placeholder for breadcrumbs or mobile menu --></div>
+                    <div>
+                        <button class="go-back-btn hidden items-center text-gray-400 hover:text-white">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                            Back
+                        </button>
+                    </div>
                     <div class="flex items-center space-x-4">
                         <form id="search-form" class="relative">
                             <input id="search-input" type="search" placeholder="Search topics..." class="bg-gray-700 text-white placeholder-gray-400 rounded-md py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500 w-64">
@@ -109,7 +307,9 @@
                         <button id="ask-question-header-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">
                             Ask Question
                         </button>
-                        <img src="https://placehold.co/32x32/7c3aed/ffffff?text=A" class="w-8 h-8 rounded-full cursor-pointer nav-link" data-page="userProfile" data-id="user1" alt="Alice">
+                        <div id="user-avatar-container">
+                            <!-- User avatar will be loaded here -->
+                        </div>
                     </div>
                 </div>
             </header>
@@ -126,9 +326,18 @@
                 <div id="newsPage" class="page"></div>
                 <div id="newsDetailPage" class="page"></div>
                 <div id="teamPage" class="page"></div>
+                <div id="membersPage" class="page"></div>
                 <div id="userProfilePage" class="page"></div>
+                <div id="activityPage" class="page"></div>
                 <div id="messagesPage" class="page"></div>
+                <div id="messageDetailPage" class="page"></div>
                 <div id="searchResultsPage" class="page"></div>
+                <div id="challengesPage" class="page"></div>
+                <div id="challengeDetailPage" class="page"></div>
+                <div id="leaderboardPage" class="page"></div>
+                <div id="projectsPage" class="page"></div>
+                <div id="projectDetailPage" class="page"></div>
+                <div id="settingsPage" class="page"></div>
             </main>
         </div>
     </div>
@@ -137,471 +346,494 @@
     <div id="docViewerModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="summaryModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="askQuestionModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
+    <div id="editQuestionModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
+    <div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4 overflow-y-auto"></div>
     <div id="messageFacultyModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
+    <div id="addProjectModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
+    <div id="messageModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
+    <div id="fileUploadModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
+    <div id="createTeamModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- DUMMY DATA ---
-        const users = {
-            'user1': { name: 'Alice', reputation: 1250, avatar: 'https://placehold.co/64x64/7c3aed/ffffff?text=A', level: 'Advanced Student', affiliation: 'Quantum Research Group', joinDate: '2024-01-15', questions: 3, answers: 12, papers: 1, interests: ['VQE', 'Quantum Chemistry'], bio: 'Focusing on variational algorithms for molecular simulations.', activity: [{type: 'answered', title: 'Trouble with QAOA for Max-Cut problem', time: '2h ago'}, {type: 'asked', title: 'PennyLane integration with PyTorch - gradients not working', time: '1d ago'}], badges: [{name: 'Communicator', icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'}, {name: 'Algorithm Enthusiast', icon:'M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V2M7.5 4.5L5.636 2.636M16.5 4.5l1.864-1.864M12 18v4M7.5 19.5l-1.864 1.864M16.5 19.5l1.864 1.864M12 12a3 3 0 11-6 0 3 3 0 016 0z'}] },
-            'user2': { name: 'Bob', reputation: 480, avatar: 'https://placehold.co/64x64/1d4ed8/ffffff?text=B', level: 'Intermediate Student', affiliation: 'Dept. of Physics', joinDate: '2024-03-22', questions: 5, answers: 4, papers: 0, interests: ['QFT', 'Grover\'s Algorithm'], bio: 'Currently learning about fundamental quantum algorithms.', activity: [{type: 'asked', title: 'Can someone explain the Quantum Fourier Transform intuitively?', time: '4h ago'}], badges: [{name: 'Questioner', icon: 'M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.79 4 4s-1.79 4-4 4c-1.742 0-3.223-.835-3.772-2L8.228 9z'},{name: 'First Post', icon:'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'}] },
-            'faculty1': { name: 'Dr. Evelyn Reed', reputation: 15200, avatar: 'https://placehold.co/64x64/9333ea/ffffff?text=ER', level: 'Faculty', affiliation: 'Dept. of Physics', online: true, expertise: ['Quantum Optics', 'Trapped Ions'], joinDate: '2022-08-10', questions: 15, answers: 152, papers: 12, interests: ['Photonics', 'Quantum Networks'], bio: 'Leading research in photonic quantum computing and long-distance entanglement.', activity: [], badges: [] },
-            'faculty2': { name: 'Prof. Kenji Tanaka', reputation: 12500, avatar: 'https://placehold.co/64x64/0284c7/ffffff?text=KT', level: 'Faculty', affiliation: 'Dept. of CS', online: false, expertise: ['Quantum Algorithms', 'Complexity Theory'], joinDate: '2022-09-01', questions: 12, answers: 130, papers: 15, interests: ['Quantum Complexity', 'Post-Quantum Crypto'], bio: 'Exploring the boundary between classical and quantum computation.', activity: [], badges: [] },
-            'faculty3': { name: 'Dr. Maria Garcia', reputation: 9800, avatar: 'https://placehold.co/64x64/be123c/ffffff?text=MG', level: 'Faculty', affiliation: 'Dept. of Chemistry', online: true, expertise: ['Quantum Chemistry', 'VQE'], joinDate: '2023-01-20', questions: 8, answers: 95, papers: 8, interests: ['Drug Discovery', 'Molecular Simulation'], bio: 'Utilizing quantum computers to solve complex chemical problems.', activity: [], badges: [] }
+
+    <!-- Helper Bot -->
+    <div id="helper-bot-container" class="fixed bottom-0 right-8 w-80 bg-gray-800 border-t border-l border-r border-gray-700 rounded-t-lg shadow-2xl z-40">
+        <div class="p-4">
+            <h3 class="font-bold text-white mb-2">How can I help you?</h3>
+            <p class="text-xs text-gray-400 mb-4">Quickly navigate to any of our key resource pages.</p>
+            <div id="helper-bot-links" class="grid grid-cols-2 gap-2 text-center">
+                <!-- Bot links will be inserted here -->
+            </div>
+        </div>
+    </div>
+    <button id="helper-bot-trigger" class="fixed bottom-6 right-6 bg-blue-600 text-white rounded-full p-3 shadow-lg hover:bg-blue-700 z-50">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 16.663c.527-.527.928-1.146 1.2-1.813M14.337 16.663c-.527-.527-.928-1.146-1.2-1.813M12 21c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z"></path></svg>
+    </button>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs, getDoc, doc, addDoc, setDoc, updateDoc, deleteDoc, query, where, onSnapshot, serverTimestamp, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6LZQRoUIsttz3rgTL3u7WzC6sSLCu8bY",
+            authDomain: "quantum-e51b0.firebaseapp.com",
+            projectId: "quantum-e51b0",
+            storageBucket: "quantum-e51b0.appspot.com",
+            messagingSenderId: "430851021652",
+            appId: "1:430851021652:web:9b81ae3fbe26935ce646c1",
+            measurementId: "G-5EEEH8093D"
         };
-
-        const categories = [
-            { id: 1, name: 'Quantum Algorithms', color: 'border-blue-500', description: 'Shor\'s, Grover\'s, VQE, QAOA...' },
-            { id: 2, name: 'Quantum Hardware', color: 'border-green-500', description: 'Superconducting, trapped ions, photonics...' },
-            { id: 3, name: 'Quantum Software', color: 'border-yellow-500', description: 'Qiskit, Cirq, PennyLane...' },
-            { id: 4, name: 'Quantum Fundamentals', color: 'border-red-500', description: 'Entanglement, superposition, measurement...' },
-            { id: 5, name: 'General Discussion', color: 'border-gray-500', description: 'News, careers, and general questions.' }
-        ];
-
-        let questions = [
-            { id: 101, catId: 1, title: 'Can someone explain the Quantum Fourier Transform intuitively?', body: 'I get the math behind the QFT, but I\'m struggling to build an intuition for what it actually *does* to a quantum state. How does it relate to the classical Fourier Transform? Any analogies would be helpful!', authorId: 'user2', votes: 25, answers: [{ by: 'faculty2', votes: 15, body: "Think of it like the classical Fourier Transform, but for quantum states. It decomposes a state into its frequency components, which is crucial for algorithms like Shor's."},{ by: 'user1', votes: 5, body: "It's a change of basis from the computational basis to the Fourier basis."}]},
-            { id: 102, catId: 1, title: 'Trouble with QAOA for Max-Cut problem', body: 'My QAOA implementation for the Max-Cut problem isn\'t converging to the correct solution. The energy is stuck at a local minimum. I\'m using a standard ansatz with p=1. Any suggestions?', authorId: 'user1', votes: 12, answers: [{by: 'faculty3', votes: 8, body: "Your ansatz might not be complex enough. Try adding more layers (increasing p) or using a different classical optimizer like SPSA instead of COBYLA."}]},
-            { id: 103, catId: 1, title: 'How does VQE compare to Quantum Phase Estimation?', body: 'I know both can be used to find eigenvalues, but what are the trade-offs? When would I choose one over the other, especially on near-term hardware?', authorId: 'user2', votes: 30, answers: []},
-            { id: 201, catId: 2, title: 'Comparing coherence times of different qubit platforms', body: 'I\'m writing a report on quantum hardware and need a good summary of the pros and cons of different qubit types regarding coherence time. Specifically, superconducting vs. trapped ions vs. photonic qubits.', authorId: 'user1', votes: 45, answers: [{by: 'faculty1', votes: 20, body: "Great question. Generally: Trapped ions have the longest coherence times (seconds to minutes) but slow gate speeds. Superconducting qubits have faster gates (nanoseconds) but shorter coherence (microseconds). Photonic qubits don't really have 'coherence time' in the same way; their challenge is generating and detecting single photons reliably and dealing with photon loss."}]},
-            { id: 202, catId: 2, title: 'What is the purpose of a transmon qubit?', body: 'Why is the transmon architecture so popular for superconducting quantum computers? What problem does it solve compared to earlier designs like the Cooper-pair box?', authorId: 'user2', votes: 18, answers: []},
-            { id: 301, catId: 3, title: 'PennyLane integration with PyTorch - gradients not working', body: 'I\'m trying to build a quantum neural network using PennyLane and PyTorch, but the gradients are always zero. I\'m using the `default.qubit` device. What could be wrong?', authorId: 'user1', votes: 8, answers: []},
-            { id: 302, catId: 3, title: 'Error: Qiskit Runtime job failing with "Invalid credentials"', body: 'I\'m trying to run a job on IBM Quantum hardware through Qiskit Runtime, but it keeps failing with an authentication error, even though I\'m sure my API token is correct. Has anyone seen this before?', authorId: 'user2', votes: 5, answers: [{by: 'user1', votes: 2, body: "Make sure you've saved your API token correctly using `QiskitRuntimeService.save_account(channel='ibm_quantum', token='YOUR_TOKEN', overwrite=True)`. Sometimes the `overwrite` flag is needed."}]},
-            { id: 401, catId: 4, title: 'What is the no-cloning theorem?', body: 'I read that you cannot create an identical copy of an arbitrary unknown quantum state. Why is this the case? What are the implications?', authorId: 'user2', votes: 55, answers: []},
-            { id: 501, catId: 5, title: 'Weekly News Roundup - Aug 12, 2025', body: 'Let\'s discuss the top quantum news from this week. The announcement of the new "Ifrit" processor seems like a big deal!', authorId: 'faculty1', votes: 15, answers: []},
-            { id: 502, catId: 5, title: 'Internship opportunities for Summer 2026', body: 'Does anyone know of companies or research groups that are likely to offer quantum computing internships for Summer 2026? Let\'s compile a list.', authorId: 'faculty2', votes: 40, answers: []},
-        ];
         
-        const newsData = [
-            { id: 1, title: 'New 256-Qubit Processor "Ifrit" Achieves 99.9% Fidelity', source: 'Quantum Insider', date: 'Aug 11, 2025', image: 'https://placehold.co/600x400/1e3a8a/ffffff?text=New+Processor', content: '<p>A leading quantum hardware company today announced its new flagship processor, "Ifrit," a 256-qubit superconducting device. In benchmark tests, the processor demonstrated an average two-qubit gate fidelity of 99.9%, a new record for devices of this scale. This breakthrough is expected to significantly accelerate research in quantum machine learning and materials science.</p><p>The "Ifrit" processor utilizes a novel coupler design that reduces crosstalk between neighboring qubits, a major source of error in previous architectures. "This allows us to perform deeper and more complex circuits than ever before," said the company\'s CEO in a press conference. The processor will be available to select partners through the cloud starting next month, with broader access planned for early 2026.</p>' },
-            { id: 2, title: 'Researchers Demonstrate Fault-Tolerant Quantum Memory', source: 'Physics Today', date: 'Aug 08, 2025', image: 'https://placehold.co/600x400/166534/ffffff?text=Quantum+Memory', content: '<p>In a paper published in Nature, a team from our university has demonstrated the first instance of a fault-tolerant quantum memory. By encoding a logical qubit into seven physical qubits using a surface code, the team was able to preserve the quantum state for a record-breaking 10 seconds, orders of magnitude longer than previous attempts. This is a critical step towards building large-scale, fault-tolerant quantum computers.</p><p>The experiment involved repeatedly performing error-correction cycles to detect and fix bit-flip and phase-flip errors without destroying the delicate quantum information. "The ability to keep a quantum state alive for this long is a game-changer," said lead author Dr. Evelyn Reed. "It proves that the theoretical concepts of quantum error correction are practically achievable."</p>' },
-            { id: 3, title: 'College Team Wins IBM Quantum Challenge', source: 'Campus Chronicle', date: 'Aug 05, 2025', image: 'https://placehold.co/600x400/92400e/ffffff?text=Challenge+Win', content: '<p>A team of undergraduate students, including our own Alice and Bob, has won the annual IBM Quantum Challenge. Their innovative solution to a complex logistics optimization problem using QAOA outperformed over 5,000 teams from around the world. The team was advised by Prof. Kenji Tanaka.</p><p>"We are incredibly proud of our students," said Prof. Tanaka. "They combined deep theoretical knowledge with clever software implementation to find a quantum solution that was more efficient than the best classical approaches for the given problem size. It shows the immense talent emerging in this field."</p>' }
-        ];
-        
-        const teamsData = [
-            { title: 'Simulating Molecular Ground States', faculty: 'Dr. Maria Garcia', description: 'We are using VQE to find the ground state energy of complex molecules for drug discovery applications. We have a solid framework but need help optimizing the classical optimizer loop and implementing error mitigation techniques.', expertise: ['Python', 'SciPy', 'VQE', 'Error Mitigation'] },
-            { title: 'Quantum Natural Language Processing', faculty: 'Prof. Kenji Tanaka', description: 'This project explores the use of quantum circuits for natural language processing tasks like sentiment analysis. We are looking for someone with a background in linguistics or classical NLP to help with dataset preparation and model evaluation.', expertise: ['NLP', 'PyTorch', 'Qiskit'] },
-            { title: 'Quantum Network Simulation', faculty: 'Dr. Evelyn Reed', description: 'We are building a simulation of a small-scale quantum network to test entanglement distribution protocols. Seeking a team member to develop the simulation modules for repeater nodes.', expertise: ['Python', 'NetSquid', 'Quantum Networks'] }
-        ];
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
 
-        const messagesData = [
-            { from: 'Dr. Evelyn Reed', subject: 'Your question about coherence times', preview: 'That was a great question in the forum. I have some additional resources that might help you...', read: false },
-            { from: 'Bob', subject: 'Re: QAOA for Max-Cut', preview: 'Thanks for the tip on the ansatz! I tried adding another layer and it seems to be working better now...', read: true },
-        ];
-        
-        const researchPapersData = [
-            { id: 1, title: 'Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer', authors: ['Peter W. Shor'], date: '1994', journal: 'SIAM Journal on Computing', content: `<h3>Abstract</h3><p>A digital computer is generally believed to be an efficient universal computing device; that is, it is believed able to simulate any physical computing device with an increase in computation time of at most a polynomial factor. This may not be true when quantum mechanics is taken into consideration. This paper considers factoring integers and finding discrete logarithms, two problems which are generally thought to be hard on a classical computer and which have been used as the basis of several proposed cryptosystems. Efficient randomized algorithms are given for these two problems on a hypothetical quantum computer. These algorithms take a number of steps polynomial in the input size, e.g., the number of digits of the integer to be factored.</p><h3>Introduction</h3><p>Since the discovery of quantum mechanics, it has been realized that quantum mechanical systems are hard to simulate on a classical computer. This is because the amount of information required to describe a quantum state of a system is exponential in the number of particles in the system. This suggests that it may be possible to build a computing device using quantum mechanics that is able to perform computations that are intractable on any classical computer. This paper gives the first algorithms of this nature for problems of both theoretical and practical importance.</p>`, summary: `<h3>Key Contributions</h3><ul><li>Introduces two groundbreaking quantum algorithms: one for integer factorization and one for computing discrete logarithms.</li><li>Demonstrates that these problems, considered computationally hard for classical computers, can be solved in polynomial time on a quantum computer.</li></ul><h3>Impact</h3><p>Shor's algorithm has profound implications for cryptography. Many widely used public-key cryptosystems, such as RSA, rely on the difficulty of factoring large integers. A sufficiently large quantum computer running Shor's algorithm could break these systems, necessitating the development of quantum-resistant cryptography.</p>`, aiQuestions: [{q: "What is the core difference between classical and quantum computation highlighted by this paper?", a:"The paper highlights that quantum computers can solve certain problems exponentially faster than classical computers by leveraging principles like superposition and entanglement. Problems like factorization, which are intractable for classical machines, become feasible on a quantum computer."}, {q:"What are the main cryptographic systems threatened by Shor's algorithm?", a:"The primary systems threatened are public-key cryptosystems based on the difficulty of integer factorization (like RSA) and the discrete logarithm problem (like Diffie-Hellman key exchange and elliptic curve cryptography)."}] },
-            { id: 2, title: 'A variational eigenvalue solver on a quantum processor', authors: ['A. Peruzzo', 'J. McClean', 'P. Shadbolt', 'et al.'], date: '2014', journal: 'Nature Communications', content: `<h3>Abstract</h3><p>Quantum computers promise to efficiently solve important problems that are intractable on a conventional computer. For quantum systems, the Schrödinger equation is the fundamental equation of motion and a cornerstone of modern physics and chemistry. However, finding the solution is a computationally difficult task, especially for complex systems. Here we present a quantum algorithm that uses a variational technique to solve for the eigenvalues of a matrix. We test our algorithm on a photonic quantum processor, demonstrating its applicability by computing the ground-state energy of the He–H+ molecule. This work paves the way for the use of quantum computers to tackle large-scale quantum chemistry problems.</p>`, summary: `<h3>Key Contributions</h3><ul><li>Introduces the Variational Quantum Eigensolver (VQE), a hybrid quantum-classical algorithm.</li><li>VQE uses a quantum computer to prepare a parameterized trial state (ansatz) and measure its energy, while a classical computer optimizes the parameters to find the minimum energy (ground state).</li></ul><h3>Impact</h3><p>VQE is a leading algorithm for near-term, noisy intermediate-scale quantum (NISQ) devices. Because it outsources much of the hard work to a classical optimizer, it requires shorter quantum circuits and is more resilient to noise than fully quantum algorithms like Quantum Phase Estimation. It has major applications in quantum chemistry and materials science.</p>`, aiQuestions: [{q: "Why is VQE considered a 'hybrid' algorithm?", a:"It's called hybrid because it uses both a quantum processor (to prepare and measure quantum states) and a classical processor (to run an optimization algorithm that updates the parameters for the quantum circuit)."}, {q:"What is the main advantage of VQE for NISQ-era computers?", a:"Its main advantage is that it can work with shallow quantum circuits, which are less susceptible to noise and decoherence. This makes it more practical for current and near-term quantum hardware which have limited qubit counts and high error rates."}] }
-        ];
-        
-        const docsData = [
-            { id: 1, title: 'Qiskit Textbook: Introduction to Quantum Circuits', description: 'Official Qiskit textbook chapter on building basic quantum circuits.', content: `<h2>Chapter 1: Introduction</h2><p>A quantum circuit is a model for quantum computation in which a computation is a sequence of quantum gates, which are reversible transformations on a quantum mechanical analog of an n-bit register. This analogous structure is referred to as an n-qubit register.</p><p>This document will walk you through creating your first circuit using Qiskit. We will cover the concepts of qubits, classical bits, and quantum gates like the Hadamard gate and the CNOT gate.</p><h3>Example: Creating a Bell State</h3><p>A Bell state is a specific state of two qubits that represents the simplest example of quantum entanglement. Here is the Qiskit code to create it:</p><pre><code>from qiskit import QuantumCircuit\n\n# Create a quantum circuit with 2 qubits and 2 classical bits\nqc = QuantumCircuit(2, 2)\n\n# Add a Hadamard gate on qubit 0\nqc.h(0)\n\n# Add a CNOT gate with control qubit 0 and target qubit 1\nqc.cx(0, 1)\n\n# Map the quantum measurement to the classical bits\nqc.measure([0,1], [0,1])\n\n# Draw the circuit\nqc.draw('mpl')</code></pre>` },
-            { id: 2, title: 'Lab 1: Superposition and Measurement', description: 'Instructions and starter code for the PHYS-485 introductory lab.', content: `<h2>Lab 1: Superposition and Measurement</h2><h3>Objective</h3><p>To experimentally verify the principles of superposition and the probabilistic nature of quantum measurement using a real quantum device available through the cloud.</p><h3>Procedure</h3><ol><li>Construct a single-qubit circuit.</li><li>Apply a Hadamard gate to the qubit to put it into a superposition state.</li><li>Perform a measurement on the qubit.</li><li>Repeat the experiment 1024 times (shots).</li><li>Analyze the results and compare them to the theoretical predictions.</li></ol>` }
-        ];
-
-        // --- RENDER FUNCTIONS ---
-        const pageElements = {
-            home: document.getElementById('homePage'), questionList: document.getElementById('questionListPage'), questionDetail: document.getElementById('questionDetailPage'), facultyCorner: document.getElementById('facultyCornerPage'), researchPapers: document.getElementById('researchPapersPage'), researchPaperDetail: document.getElementById('researchPaperDetailPage'), docs: document.getElementById('docsPage'), news: document.getElementById('newsPage'), newsDetail: document.getElementById('newsDetailPage'), team: document.getElementById('teamPage'), userProfile: document.getElementById('userProfilePage'), messages: document.getElementById('messagesPage'), searchResults: document.getElementById('searchResultsPage'),
+        // App state
+        // Since we removed authentication, we'll use a static "guest" user object.
+        const currentUser = {
+            uid: 'guest-user-01',
+            name: 'Guest User',
+            description: 'Exploring the quantum realm!',
+            points: 0,
+            avatar: `https://placehold.co/64x64/9ca3af/ffffff?text=G`,
+            level: 'Guest',
         };
+        let users = {}; // Local cache for user data
 
-        function renderHomePage() {
-            const categoryGrid = document.getElementById('category-grid') || (pageElements.home.innerHTML = '<div id="category-grid" class="space-y-4"></div>', document.getElementById('category-grid'));
-            const sidebarCategories = document.getElementById('sidebar-categories');
-            categoryGrid.innerHTML = `
-                <div class="bg-blue-900/50 border border-blue-700 text-blue-200 px-4 py-3 rounded-md relative mb-6" role="alert">
-                    <strong class="font-bold">Welcome!</strong>
-                    <span class="block sm:inline"> This is the central hub for all quantum computing discussions at our college.</span>
-                </div>
-                <div class="flex justify-between items-center mb-4">
-                    <div class="flex items-center space-x-4 text-gray-400"><span class="font-bold text-white">All Categories</span></div>
-                    <div class="flex items-center space-x-4 text-gray-400 font-semibold"><span>Topics</span></div>
-                </div>`;
-            sidebarCategories.innerHTML = '';
-
-            categories.forEach(cat => {
-                const catQuestions = questions.filter(q => q.catId === cat.id);
-                categoryGrid.insertAdjacentHTML('beforeend', `
-                    <div class="category-box ${cat.color} bg-gray-900/50 rounded-md flex">
-                        <div class="flex-1 p-4">
-                            <a href="#" class="text-lg font-bold text-white hover:underline nav-link" data-page="questionList" data-id="${cat.id}">${cat.name}</a>
-                            <p class="text-gray-400 mt-1">${cat.description}</p>
-                        </div>
-                        <div class="w-1/2 p-4 border-l border-gray-700">
-                            ${catQuestions.slice(0, 3).map(topic => `
-                                <a href="#" class="flex items-center p-2 rounded-md topic-link nav-link" data-page="questionDetail" data-id="${topic.id}">
-                                    <svg class="w-4 h-4 mr-2 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
-                                    <span class="truncate">${topic.title}</span>
-                                </a>`).join('')}
-                        </div>
-                    </div>`);
-                sidebarCategories.insertAdjacentHTML('beforeend', `<a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="questionList" data-id="${cat.id}"><span class="w-3 h-3 mr-3 rounded-sm ${cat.color.replace('border-', 'bg-')}"></span>${cat.name}</a>`);
-            });
-        }
-
-        function renderQuestionListPage(categoryId) {
-            const category = categories.find(c => c.id == categoryId);
-            const catQuestions = questions.filter(q => q.catId == categoryId);
-            pageElements.questionList.innerHTML = `
-                <h1 class="text-2xl font-bold text-white mb-4">${category.name}</h1>
-                <table class="w-full text-left">
-                    <thead><tr class="text-gray-400 border-b border-gray-700"><th class="py-2 font-semibold">Topic</th><th class="py-2 font-semibold text-center">Replies</th><th class="py-2 font-semibold text-center">Votes</th><th class="py-2 font-semibold">Activity</th></tr></thead>
-                    <tbody class="divide-y divide-gray-700">
-                        ${catQuestions.map(q => `
-                            <tr>
-                                <td class="py-3"><a href="#" class="font-semibold text-white hover:underline nav-link" data-page="questionDetail" data-id="${q.id}">${q.title}</a></td>
-                                <td class="py-3 text-center text-gray-400 font-semibold">${q.answers.length}</td>
-                                <td class="py-3 text-center text-gray-400 font-semibold">${q.votes}</td>
-                                <td class="py-3 text-gray-400">${Math.floor(Math.random() * 60)}m</td>
-                            </tr>`).join('')}
-                    </tbody>
-                </table>`;
-        }
-
-        function renderQuestionDetailPage(questionId) {
-            const q = questions.find(q => q.id == questionId);
-            const author = users[q.authorId];
-            pageElements.questionDetail.innerHTML = `
-                <h1 class="text-3xl font-bold text-white mb-4">${q.title}</h1>
-                <div class="space-y-6">
-                    <div class="flex space-x-4">
-                        <img src="${author.avatar}" alt="${author.name}" class="w-12 h-12 rounded-full">
-                        <div class="flex-1 bg-gray-900/50 p-4 rounded-md"><p>${q.body}</p></div>
-                    </div>
-                    ${q.answers.map(ans => { const ansAuthor = users[ans.by]; return `
-                        <div class="flex space-x-4"><img src="${ansAuthor.avatar}" alt="${ansAuthor.name}" class="w-12 h-12 rounded-full"><div class="flex-1 bg-gray-900/50 p-4 rounded-md"><p>${ans.body}</p><div class="flex items-center justify-between mt-4 text-gray-400"><div class="flex items-center space-x-4"><button class="hover:text-white">Reply</button><div class="flex items-center space-x-2"><button class="vote-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg></button><span class="font-semibold text-white">${ans.votes}</span><button class="vote-btn"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button></div></div><div>- ${ansAuthor.name}</div></div></div></div>` }).join('')}
-                    <div class="flex space-x-4"><img src="${users['user1'].avatar}" alt="Your avatar" class="w-12 h-12 rounded-full"><div class="flex-1 bg-gray-900/50 p-4 rounded-md"><textarea class="w-full bg-gray-700 text-white rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="5" placeholder="Type your answer here..."></textarea><div class="text-right mt-2"><button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Post Answer</button></div></div></div>
-                </div>`;
-        }
+        document.addEventListener('DOMContentLoaded', () => {
         
-        function renderFacultyCorner() {
-            pageElements.facultyCorner.innerHTML = `
-                <h1 class="text-2xl font-bold text-white mb-4">Faculty Corner</h1>
-                <div class="space-y-4">
-                    ${Object.values(users).filter(u => u.level === 'Faculty').map(f => `
-                        <div class="bg-gray-900/50 p-4 rounded-md flex items-center space-x-4">
-                            <div class="relative">
-                                <img src="${f.avatar}" alt="${f.name}" class="w-16 h-16 rounded-full">
-                                <span class="absolute bottom-0 right-0 block h-4 w-4 rounded-full ${f.online ? 'bg-green-400' : 'bg-gray-500'} ring-2 ring-gray-800"></span>
-                            </div>
-                            <div class="flex-1">
-                                <h3 class="text-lg font-bold text-white">${f.name}</h3>
-                                <p class="text-gray-400">${f.affiliation}</p>
-                                <div class="mt-2 flex flex-wrap gap-2">${f.expertise.map(e => `<span class="bg-gray-700 text-blue-300 text-xs font-medium px-2.5 py-1 rounded-full">${e}</span>`).join('')}</div>
-                            </div>
-                            <button class="message-faculty-btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md" data-faculty-name="${f.name}">Message</button>
-                        </div>`).join('')}
-                </div>`;
-        }
+            // --- VARIABLE AND CONSTANT DECLARATIONS ---
+            const pageElements = {
+                home: document.getElementById('homePage'),
+                questionList: document.getElementById('questionListPage'),
+                questionDetail: document.getElementById('questionDetailPage'),
+                facultyCorner: document.getElementById('facultyCornerPage'),
+                researchPapers: document.getElementById('researchPapersPage'),
+                researchPaperDetail: document.getElementById('researchPaperDetailPage'),
+                docs: document.getElementById('docsPage'),
+                news: document.getElementById('newsPage'),
+                newsDetail: document.getElementById('newsDetailPage'),
+                team: document.getElementById('teamPage'),
+                members: document.getElementById('membersPage'),
+                userProfile: document.getElementById('userProfilePage'),
+                activity: document.getElementById('activityPage'),
+                messages: document.getElementById('messagesPage'),
+                messageDetail: document.getElementById('messageDetailPage'),
+                searchResults: document.getElementById('searchResultsPage'),
+                challenges: document.getElementById('challengesPage'),
+                challengeDetail: document.getElementById('challengeDetailPage'),
+                leaderboard: document.getElementById('leaderboardPage'),
+                projects: document.getElementById('projectsPage'),
+                projectDetail: document.getElementById('projectDetailPage'),
+                settings: document.getElementById('settingsPage')
+            };
+            const settings = {
+                theme: 'dark'
+            };
+            let pageHistory = [{page: 'home', id: null}];
 
-        function renderResearchPapersListPage() {
-            pageElements.researchPapers.innerHTML = `
-                <h1 class="text-2xl font-bold text-white mb-4">Research Papers</h1>
-                <div class="space-y-3">
-                    ${researchPapersData.map(p => `<a href="#" class="block bg-gray-900/50 p-4 rounded-md hover:bg-gray-700/50 nav-link" data-page="researchPaperDetail" data-id="${p.id}"><h3 class="font-semibold text-white">${p.title}</h3><p class="text-sm text-gray-400 mt-1">By ${p.authors.join(', ')} - ${p.journal}, ${p.date}</p></a>`).join('')}
-                </div>`;
-        }
+            // --- FUNCTION DEFINITIONS ---
 
-        function renderResearchPaperDetailPage(paperId) {
-            const paper = researchPapersData.find(p => p.id == paperId);
-            pageElements.researchPaperDetail.innerHTML = `
-                <div class="relative">
-                    <button id="ai-bot-btn" class="fixed bottom-8 right-8 bg-blue-600 text-white rounded-full p-4 shadow-lg hover:bg-blue-700 z-20">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 16.663c.527-.527.928-1.146 1.2-1.813M14.337 16.663c-.527-.527-.928-1.146-1.2-1.813M12 21c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z"></path></svg>
-                    </button>
-                    <div class="bg-gray-900/50 p-6 rounded-md">
-                        <h1 class="text-2xl font-bold text-white mb-2">${paper.title}</h1>
-                        <p class="text-gray-400 mb-6">By ${paper.authors.join(', ')} (${paper.journal}, ${paper.date})</p>
-                        <div class="prose prose-invert max-w-none text-gray-300">${paper.content}</div>
-                    </div>
-                    <div id="ai-analysis-section" class="bg-gray-900/50 p-6 rounded-md mt-8">
-                        <h2 class="text-xl font-bold text-white mb-4">AI Analysis</h2>
-                        <div class="space-y-2">
-                            <button class="ai-question-btn text-left w-full p-2 rounded hover:bg-gray-700/50" data-summary-id="${paper.id}">- Summarize this paper</button>
-                            ${paper.aiQuestions.map((q, index) => `
-                                <div>
-                                    <button class="ai-question-btn text-left w-full p-2 rounded hover:bg-gray-700/50" data-answer-id="ans-${paper.id}-${index}">- ${q.q}</button>
-                                    <p id="ans-${paper.id}-${index}" class="answer-toggle text-sm text-gray-300 bg-gray-800 p-3 rounded-md mt-1">${q.a}</p>
-                                </div>`).join('')}
-                        </div>
-                        <div class="mt-4 flex space-x-2">
-                            <input type="text" class="flex-1 bg-gray-700 text-white rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ask the AI a follow-up question...">
-                            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Send</button>
-                        </div>
-                    </div>
-                </div>`;
-        }
-
-        function renderDocsPage() {
-            pageElements.docs.innerHTML = `
-                <h1 class="text-2xl font-bold text-white mb-4">Documents</h1>
-                <div class="space-y-3">
-                    ${docsData.map(doc => `<div class="bg-gray-900/50 p-4 rounded-md flex items-center space-x-4"><svg class="h-8 w-8 text-blue-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg><div class="flex-1"><h3 class="font-semibold text-white">${doc.title}</h3><p class="text-sm text-gray-400">${doc.description}</p></div><button class="view-doc-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md" data-doc-id="${doc.id}">View</button></div>`).join('')}
-                </div>`;
-        }
-
-        function renderNewsPage() {
-            pageElements.news.innerHTML = `
-                <h1 class="text-2xl font-bold text-white mb-6">Latest News</h1>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                ${newsData.map(n => `
-                    <a href="#" class="bg-gray-900/50 rounded-lg overflow-hidden block hover:ring-2 ring-blue-500 nav-link" data-page="newsDetail" data-id="${n.id}">
-                        <img src="${n.image}" alt="${n.title}" class="w-full h-40 object-cover">
-                        <div class="p-4">
-                            <h3 class="font-bold text-white">${n.title}</h3>
-                            <p class="text-xs text-gray-400 mt-2">${n.source} - ${n.date}</p>
-                        </div>
-                    </a>`).join('')}
-                </div>`;
-        }
-
-        function renderNewsDetailPage(newsId) {
-            const newsItem = newsData.find(n => n.id == newsId);
-            pageElements.newsDetail.innerHTML = `
-                <div class="bg-gray-900/50 rounded-lg overflow-hidden">
-                    <img src="${newsItem.image}" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h1 class="text-3xl font-bold text-white">${newsItem.title}</h1>
-                        <p class="text-sm text-gray-400 mt-2 mb-4">${newsItem.source} - ${newsItem.date}</p>
-                        <div class="prose prose-invert max-w-none text-gray-300">${newsItem.content}</div>
-                    </div>
-                </div>`;
-        }
-
-        function renderTeamFinderPage() {
-            pageElements.team.innerHTML = `
-                <h1 class="text-2xl font-bold text-white mb-6">Team Finder</h1>
-                <div class="space-y-4">
-                ${teamsData.map(t => `
-                    <div class="bg-gray-900/50 p-6 rounded-md">
-                        <h3 class="text-lg font-bold text-blue-400">${t.title}</h3>
-                        <p class="text-sm text-gray-400 mt-1">Faculty Advisor: ${t.faculty}</p>
-                        <p class="text-gray-300 mt-3">${t.description}</p>
-                        <div class="mt-4">
-                            <p class="text-xs text-gray-500 mb-2 uppercase font-semibold">Seeking Expertise In:</p>
-                            <div class="flex flex-wrap gap-2">${t.expertise.map(e => `<span class="bg-gray-700 text-blue-300 text-xs font-medium px-2.5 py-1 rounded-full">${e}</span>`).join('')}</div>
-                        </div>
-                        <div class="text-right mt-4">
-                             <button class="express-interest-btn bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md">Express Interest</button>
-                        </div>
-                    </div>
-                `).join('')}
-                </div>`;
-        }
-        
-        function renderUserProfilePage(userId) {
-            const user = users[userId];
-            pageElements.userProfile.innerHTML = `
-                <div class="bg-gray-900/50 rounded-md">
-                    <div class="h-32 bg-blue-800 rounded-t-md"></div>
-                    <div class="p-6">
-                        <div class="flex items-end -mt-16">
-                            <img src="${user.avatar}" class="w-24 h-24 rounded-full border-4 border-gray-800">
-                            <div class="ml-4">
-                                <h2 class="text-2xl font-bold text-white">${user.name}</h2>
-                                <p class="text-gray-400">${user.level}</p>
-                            </div>
-                        </div>
-                        <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center border-t border-gray-700 pt-6">
-                            <div><div class="text-xl font-bold text-white">${user.reputation}</div><div class="text-xs text-gray-400 uppercase">Reputation</div></div>
-                            <div><div class="text-xl font-bold text-white">${user.questions}</div><div class="text-xs text-gray-400 uppercase">Questions</div></div>
-                            <div><div class="text-xl font-bold text-white">${user.answers}</div><div class="text-xs text-gray-400 uppercase">Answers</div></div>
-                            <div><div class="text-xl font-bold text-white">${user.papers}</div><div class="text-xs text-gray-400 uppercase">Papers</div></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2">
-                        <div class="bg-gray-900/50 rounded-md p-6">
-                            <h3 class="text-lg font-bold text-white mb-4">Recent Activity</h3>
-                            <ul class="space-y-3">
-                                ${user.activity.map(act => `
-                                <li class="flex items-center text-gray-400">
-                                    <span class="bg-gray-700 text-xs font-semibold mr-3 px-2 py-1 rounded">${act.type}</span>
-                                    <span>${act.title}</span>
-                                    <span class="ml-auto text-xs">${act.time}</span>
-                                </li>
-                                `).join('')}
-                            </ul>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="bg-gray-900/50 rounded-md p-6">
-                            <h3 class="text-lg font-bold text-white mb-4">Contributions & Interests</h3>
-                            <p class="text-gray-300 mb-4">${user.bio}</p>
-                            <p class="text-xs text-gray-500 mb-2 uppercase font-semibold">Interested In:</p>
-                            <div class="flex flex-wrap gap-2 mb-4">${user.interests.map(e => `<span class="bg-gray-700 text-blue-300 text-xs font-medium px-2.5 py-1 rounded-full">${e}</span>`).join('')}</div>
-                            <h3 class="text-lg font-bold text-white mb-4 mt-6">Badges</h3>
-                            <div class="flex flex-wrap gap-4">
-                                ${user.badges.map(b => `
-                                <div class="text-center">
-                                    <div class="bg-gray-700 rounded-full p-3 w-16 h-16 mx-auto flex items-center justify-center">
-                                        <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${b.icon}"></path></svg>
-                                    </div>
-                                    <p class="text-xs mt-2">${b.name}</p>
-                                </div>`).join('')}
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-        }
-        
-        function renderMessagesPage() {
-            pageElements.messages.innerHTML = `
-                <h1 class="text-2xl font-bold text-white mb-4">Messages</h1>
-                <div class="bg-gray-900/50 rounded-md">
-                    <ul class="divide-y divide-gray-700">
-                        ${messagesData.map(msg => `
-                            <li class="p-4 hover:bg-gray-700/50 cursor-pointer ${!msg.read ? 'font-bold text-white' : 'text-gray-400'}">
-                                <div class="flex justify-between">
-                                    <p>${msg.from}</p>
-                                    <p class="text-xs">${Math.floor(Math.random() * 24)} hours ago</p>
-                                </div>
-                                <p class="truncate mt-1 ${!msg.read ? 'text-gray-300' : 'text-gray-500'}">${msg.subject}</p>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>`;
-        }
-
-        function renderSearchResultsPage(query) {
-            const results = questions.filter(q => q.title.toLowerCase().includes(query.toLowerCase()));
-            pageElements.searchResults.innerHTML = `
-                <h1 class="text-2xl font-bold text-white mb-4">Search Results for "${query}"</h1>
-                ${results.length > 0 ? `
-                <table class="w-full text-left">
-                    <thead><tr class="text-gray-400 border-b border-gray-700"><th class="py-2 font-semibold">Topic</th><th class="py-2 font-semibold text-center">Replies</th></tr></thead>
-                    <tbody class="divide-y divide-gray-700">
-                        ${results.map(q => `<tr><td class="py-3"><a href="#" class="font-semibold text-white hover:underline nav-link" data-page="questionDetail" data-id="${q.id}">${q.title}</a></td><td class="py-3 text-center text-gray-400 font-semibold">${q.answers.length}</td></tr>`).join('')}
-                    </tbody>
-                </table>` : `<p class="text-gray-400">No results found.</p>`}`;
-        }
-
-        function renderModals() {
-            // Ask Question Modal
-            document.getElementById('askQuestionModal').innerHTML = `<form class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-2xl"><h2 class="text-2xl font-bold text-white mb-4">Ask a Question</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Title</label><input type="text" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Category</label><select class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2">${categories.map(c=>`<option>${c.name}</option>`).join('')}</select></div><div class="mb-4"><label class="block text-gray-400 mb-1">Body</label><textarea rows="6" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Post</button></div></form>`;
-            // Message Faculty Modal
-            document.getElementById('messageFacultyModal').innerHTML = `<div class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-2xl"><h2 id="message-faculty-title" class="text-2xl font-bold text-white mb-4">Message</h2><form><div class="mb-4"><label class="block text-gray-400 mb-1">Subject</label><input type="text" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2"></div><div class="mb-4"><label class="block text-gray-400 mb-1">Message</label><textarea rows="6" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2"></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Send</button></div></form></div>`;
-            // Other modals
-            document.getElementById('docViewerModal').innerHTML = `<div class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-4xl h-5/6 flex flex-col"><h2 id="doc-modal-title" class="text-2xl font-bold text-white mb-4">Document Viewer</h2><div id="doc-modal-content" class="flex-1 overflow-y-auto bg-gray-900/50 p-4 rounded prose prose-invert max-w-none"></div><div class="flex justify-end mt-4"><button type="button" class="modal-cancel-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Close</button></div></div>`;
-            document.getElementById('summaryModal').innerHTML = `<div class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-4xl h-5/6 flex flex-col"><h2 id="summary-modal-title" class="text-2xl font-bold text-white mb-4">AI Paper Summary</h2><div id="summary-modal-content" class="flex-1 overflow-y-auto bg-gray-900/50 p-4 rounded prose prose-invert max-w-none"></div><div class="flex justify-end mt-4"><button type="button" class="modal-cancel-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Close</button></div></div>`;
-        }
-
-        // --- NAVIGATION & EVENT LISTENERS ---
-        function navigateTo(pageKey, dataId = null) {
-            Object.values(pageElements).forEach(p => p.classList.remove('active'));
-            const targetPage = pageElements[pageKey] || pageElements.home;
-            targetPage.classList.add('active');
-            
-            document.querySelectorAll('.sidebar-link').forEach(link => { link.classList.remove('active'); if (link.dataset.page === pageKey) link.classList.add('active'); });
-            
-            // Special case for home button
-            if (pageKey === 'home') {
-                document.querySelector('.sidebar-link[data-page="home"]').classList.add('active');
-            }
-
-            switch (pageKey) {
-                case 'home': renderHomePage(); break;
-                case 'questionList': renderQuestionListPage(dataId); break;
-                case 'questionDetail': renderQuestionDetailPage(dataId); break;
-                case 'facultyCorner': renderFacultyCorner(); break;
-                case 'researchPapers': renderResearchPapersListPage(); break;
-                case 'researchPaperDetail': renderResearchPaperDetailPage(dataId); break;
-                case 'docs': renderDocsPage(); break;
-                case 'news': renderNewsPage(); break;
-                case 'newsDetail': renderNewsDetailPage(dataId); break;
-                case 'team': renderTeamFinderPage(); break;
-                case 'userProfile': renderUserProfilePage(dataId); break;
-                case 'messages': renderMessagesPage(); break;
-                case 'searchResults': renderSearchResultsPage(dataId); break;
-            }
-        }
-
-        document.body.addEventListener('click', e => {
-            const navLink = e.target.closest('.nav-link');
-            if (navLink) { e.preventDefault(); navigateTo(navLink.dataset.page, navLink.dataset.id); }
-
-            const modalCancelBtn = e.target.closest('.modal-cancel-btn');
-            if (modalCancelBtn) { modalCancelBtn.closest('.fixed').classList.replace('flex', 'hidden'); }
-            
-            const viewDocBtn = e.target.closest('.view-doc-btn');
-            if (viewDocBtn) {
-                const doc = docsData.find(d => d.id == viewDocBtn.dataset.docId);
-                if (doc) {
-                    document.getElementById('doc-modal-title').textContent = doc.title;
-                    document.getElementById('doc-modal-content').innerHTML = doc.content;
-                    document.getElementById('docViewerModal').classList.replace('hidden', 'flex');
+            function updateUserAvatar() {
+                const container = document.getElementById('user-avatar-container');
+                if (currentUser) {
+                    container.innerHTML = `<img src="${currentUser.avatar}" class="w-8 h-8 rounded-full cursor-pointer nav-link" data-page="userProfile" data-id="${currentUser.uid}" alt="${currentUser.name}">`;
+                } else {
+                    container.innerHTML = ''; // Or a login button
                 }
             }
 
-            if (e.target.closest('#ask-question-header-btn')) { document.getElementById('askQuestionModal').classList.replace('hidden', 'flex'); }
-            
-            const messageFacultyBtn = e.target.closest('.message-faculty-btn');
-            if (messageFacultyBtn) {
-                document.getElementById('message-faculty-title').textContent = `Message ${messageFacultyBtn.dataset.facultyName}`;
-                document.getElementById('messageFacultyModal').classList.replace('hidden', 'flex');
-            }
-            
-            const expressInterestBtn = e.target.closest('.express-interest-btn');
-            if (expressInterestBtn && !expressInterestBtn.disabled) {
-                expressInterestBtn.textContent = 'Interest Expressed!';
-                expressInterestBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
-                expressInterestBtn.classList.add('bg-gray-500', 'cursor-not-allowed');
-                expressInterestBtn.disabled = true;
+            async function fetchAllData() {
+                const usersSnapshot = await getDocs(collection(db, "users"));
+                users = {};
+                usersSnapshot.forEach(doc => {
+                    users[doc.id] = { id: doc.id, ...doc.data() };
+                });
+                if (!users[currentUser.uid]) {
+                    users[currentUser.uid] = currentUser;
+                }
             }
 
-            const paperDetailPage = e.target.closest('#researchPaperDetailPage');
-            if (paperDetailPage) {
-                if (e.target.closest('#ai-bot-btn')) { document.getElementById('ai-analysis-section').scrollIntoView(); }
-                const questionBtn = e.target.closest('.ai-question-btn');
-                if (questionBtn) {
-                    if (questionBtn.dataset.summaryId) {
-                        const paper = researchPapersData.find(p => p.id == questionBtn.dataset.summaryId);
-                        document.getElementById('summary-modal-title').textContent = `Summary: ${paper.title}`;
-                        document.getElementById('summary-modal-content').innerHTML = paper.summary;
-                        document.getElementById('summaryModal').classList.replace('hidden', 'flex');
-                    } else if (questionBtn.dataset.answerId) {
-                        document.getElementById(questionBtn.dataset.answerId).style.display = 'block';
+            async function renderHomePage(filterType = 'latest') {
+                const homePage = pageElements.home;
+                const sidebarCategories = document.getElementById('sidebar-categories');
+                
+                const questionsQuery = query(collection(db, "questions"));
+                const questionsSnapshot = await getDocs(questionsQuery);
+                let questions = questionsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                const sortedByReplies = [...questions].sort((a, b) => (b.answers?.length || 0) - (a.answers?.length || 0));
+                const topQuestions = sortedByReplies.slice(0, 4);
+
+                homePage.innerHTML = `
+                    <div class="mb-8">
+                        <h2 class="text-xl font-bold text-white mb-4">Trending Topics</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${topQuestions.map(q => `
+                                <a href="#" class="bg-gray-900/50 p-4 rounded-md hover:bg-gray-700/50 nav-link" data-page="questionDetail" data-id="${q.id}">
+                                    <h3 class="font-semibold text-white truncate">${q.title}</h3>
+                                    <div class="text-xs text-gray-400 mt-2 flex items-center space-x-4">
+                                        <span>${q.answers?.length || 0} replies</span>
+                                        <span>${q.votes || 0} votes</span>
+                                    </div>
+                                </a>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-6 text-gray-400 border-b border-gray-700 mb-8 mt-8">
+                        <button class="py-2 leaderboard-link ${filterType === 'latest' ? 'active' : ''}" data-filter="latest">Latest</button>
+                    </div>
+
+                    <div id="all-questions-feed" class="mb-8"></div>
+                    <div id="category-grid" class="space-y-4"></div>
+                `;
+
+                const allQuestionsFeed = document.getElementById('all-questions-feed');
+                allQuestionsFeed.innerHTML = `<h2 class="text-xl font-bold text-white mb-4">All Questions & Discussions</h2>` + 
+                questions.map(q => {
+                    const author = users[q.authorId];
+                    return `
+                    <div class="bg-gray-900/50 p-4 rounded-md mb-4">
+                        <h3 class="font-semibold text-white"><a href="#" class="nav-link hover:underline" data-page="questionDetail" data-id="${q.id}">${q.title}</a></h3>
+                        <p class="text-xs text-gray-400 mt-1">Asked by ${author?.name || 'Unknown'}</p>
+                        <div class="mt-3 border-t border-gray-700 pt-3 space-y-3">
+                        ${(q.answers || []).slice(0,2).map(ans => {
+                            const ansAuthor = users[ans.by];
+                            if (!ansAuthor) return `<div class="text-xs"><strong class="text-blue-400">Unknown User:</strong> <span class="text-gray-300">${ans.body}</span></div>`
+                            return `<div class="text-xs"><strong class="text-blue-400">${ansAuthor.name}:</strong> <span class="text-gray-300">${ans.body}</span></div>`
+                        }).join('')}
+                        ${(q.answers?.length || 0) > 2 ? `<a href="#" class="text-xs text-blue-400 hover:underline nav-link" data-page="questionDetail" data-id="${q.id}">View ${(q.answers.length) - 2} more replies...</a>` : ''}
+                        ${(q.answers?.length || 0) === 0 ? `<p class="text-xs text-gray-500">No answers yet.</p>` : ''}
+                        </div>
+                    </div>
+                    `
+                }).join('');
+                
+                const categoryGrid = document.getElementById('category-grid');
+                const categoriesSnapshot = await getDocs(collection(db, "categories"));
+                const categories = categoriesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                categoryGrid.innerHTML = `<h2 class="text-xl font-bold text-white mb-4">Categories</h2><div class="flex justify-between items-center mb-4 text-gray-400 font-semibold"><span class="w-2/3">Category</span><span class="w-1/3">Latest Topic</span></div>`;
+                sidebarCategories.innerHTML = '';
+
+                categories.forEach(cat => {
+                    const catColor = cat.color || 'border-gray-500'; // Default color
+                    const catQuestions = questions.filter(q => q.catId === cat.id);
+                    const latestTopic = catQuestions.sort((a,b) => b.createdAt - a.createdAt)[0];
+                    sidebarCategories.insertAdjacentHTML('beforeend', `<a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="questionList" data-id="${cat.id}"><span class="w-3 h-3 mr-3 rounded-sm ${catColor.replace('border-', 'bg-')}"></span>${cat.name}</a>`);
+                    categoryGrid.insertAdjacentHTML('beforeend', `
+                        <div class="category-box ${catColor} bg-gray-900/50 rounded-md flex">
+                            <div class="flex-1 p-4 w-2/3">
+                                <a href="#" class="text-lg font-bold text-white hover:underline nav-link" data-page="questionList" data-id="${cat.id}">${cat.name}</a>
+                                <p class="text-gray-400 mt-1">${cat.description}</p>
+                            </div>
+                            <div class="w-1/3 p-4 border-l border-gray-700">
+                                 ${latestTopic ? `<a href="#" class="flex items-center p-2 rounded-md topic-link nav-link text-gray-200 hover:text-white" data-page="questionDetail" data-id="${latestTopic.id}">
+                                        <svg class="w-4 h-4 mr-2 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
+                                        <span class="truncate">${latestTopic.title}</span>
+                                    </a>` : '<span class="text-gray-500 text-sm">No topics yet</span>'}
+                            </div>
+                        </div>`);
+                });
+            }
+
+            function renderQuestionDetailPage(questionId) {
+                const questionDocRef = doc(db, "questions", questionId);
+                
+                onSnapshot(questionDocRef, (docSnap) => {
+                    if (!docSnap.exists()) {
+                        pageElements.questionDetail.innerHTML = `<h1 class="text-2xl font-bold text-red-500">Question not found</h1>`;
+                        return;
+                    }
+                    const q = { id: docSnap.id, ...docSnap.data() };
+                    const author = users[q.authorId];
+                    
+                    const answersHTML = (q.answers || []).map((ans, index) => {
+                        const ansAuthor = users[ans.by];
+                        if (!ansAuthor) return ''; // Skip if author data not loaded yet
+                        return `
+                        <div class="flex space-x-4" data-answer-index="${index}">
+                            <img src="${ansAuthor.avatar}" alt="${ansAuthor.name}" class="w-12 h-12 rounded-full">
+                            <div class="flex-1 bg-gray-900/50 p-4 rounded-md">
+                                <p>${ans.body}</p>
+                                <div class="flex items-center justify-between mt-4 text-gray-400">
+                                    <div class="flex items-center space-x-4">
+                                        <button class="reply-to-answer-btn hover:text-white" data-username="${ansAuthor.name}">Reply</button>
+                                        <button class="like-btn flex items-center space-x-1 hover:text-red-400 ${ans.likes?.includes(currentUser.uid) ? 'liked' : ''}" data-question-id="${q.id}" data-answer-index="${index}">
+                                            <i class="fa-heart ${ans.likes?.includes(currentUser.uid) ? 'fas' : 'far'}"></i>
+                                            <span>${ans.likes?.length || 0}</span>
+                                        </button>
+                                    </div>
+                                    <div>- ${ansAuthor.name}</div>
+                                </div>
+                                <div class="reply-form-container mt-4 hidden"></div>
+                            </div>
+                        </div>`;
+                    }).join('');
+
+                    pageElements.questionDetail.innerHTML = `
+                        <h1 class="text-3xl font-bold text-white mb-4">${q.title}</h1>
+                        <div class="space-y-6">
+                            <div class="flex space-x-4">
+                                <img src="${author?.avatar}" alt="${author?.name}" class="w-12 h-12 rounded-full">
+                                <div class="flex-1 bg-gray-900/50 p-4 rounded-md">
+                                    <p>${q.body}</p>
+                                    ${q.authorId === currentUser.uid ? `
+                                        <div class="mt-4 text-right">
+                                            <button class="edit-question-btn text-xs text-blue-400 hover:underline mr-4" data-id="${q.id}">Edit</button>
+                                            <button class="delete-question-btn text-xs text-red-400 hover:underline" data-id="${q.id}">Delete</button>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            ${answersHTML}
+                            <div class="flex space-x-4"><img src="${currentUser.avatar}" alt="Your avatar" class="w-12 h-12 rounded-full"><div class="flex-1 bg-gray-900/50 p-4 rounded-md"><textarea id="answer-textarea" class="w-full bg-gray-700 text-white rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="5" placeholder="Type your answer here..."></textarea><div class="text-right mt-2"><button class="post-answer-btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md" data-id="${q.id}">Post Answer</button></div></div></div>
+                        </div>`;
+                });
+            }
+            
+            async function renderMembersPage() {
+                const memberList = Object.values(users);
+                const sortedMembers = memberList.sort((a,b) => (b.points || 0) - (a.points || 0));
+                pageElements.members.innerHTML = `
+                    <h1 class="text-2xl font-bold text-white mb-4">Community Members</h1>
+                    <div class="space-y-4">
+                    ${sortedMembers.map(member => `
+                        <a href="#" class="block bg-gray-900/50 p-4 rounded-md flex items-center space-x-4 hover:bg-gray-700/50 nav-link" data-page="userProfile" data-id="${member.id}">
+                            <img src="${member.avatar}" alt="${member.name}" class="w-12 h-12 rounded-full">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold text-white">${member.name}</h3>
+                                <p class="text-gray-400">${member.affiliation || member.level || 'Member'}</p>
+                            </div>
+                            <span class="text-sm font-semibold text-white">${member.points || 'N/A'} Points Earned</span>
+                        </a>
+                    `).join('')}
+                    </div>
+                `;
+            }
+
+            async function renderUserProfilePage(userId) {
+                let user;
+                if (userId === currentUser.uid) {
+                    user = currentUser;
+                } else {
+                    const userDocRef = doc(db, "users", userId);
+                    const userDocSnap = await getDoc(userDocRef);
+                    if (userDocSnap.exists()) {
+                        user = { id: userDocSnap.id, ...userDocSnap.data() };
                     }
                 }
+
+                if (!user) {
+                    pageElements.userProfile.innerHTML = `<h1 class="text-2xl font-bold text-red-500">User Not Found</h1>`;
+                    return;
+                }
+                
+                const isCurrentUserProfile = user.id === currentUser.uid;
+                
+                const questionsQuery = query(collection(db, "questions"), where("authorId", "==", userId));
+                const questionsSnapshot = await getDocs(questionsQuery);
+                const userQuestionsCount = questionsSnapshot.size;
+
+                pageElements.userProfile.innerHTML = `
+                    <div class="bg-gray-900/50 rounded-md">
+                        <div class="h-32 bg-blue-800 rounded-t-md"></div>
+                        <div class="p-6">
+                            <div class="flex items-end -mt-16">
+                                <img src="${user.avatar}" class="w-24 h-24 rounded-full border-4 border-gray-800">
+                                <div class="ml-4 flex-1">
+                                    <h2 class="text-2xl font-bold text-white">${user.name}</h2>
+                                    <p class="text-gray-400">${user.level}</p>
+                                </div>
+                                ${isCurrentUserProfile ? `<button id="edit-profile-btn" class="bg-gray-600 text-white text-sm px-4 py-2 rounded-md cursor-not-allowed" title="Editing disabled without login">Edit Profile</button>` : ''}
+                            </div>
+                            <div class="mt-6 border-t border-gray-700 pt-6">
+                                <p class="text-gray-300">${user.description || 'No description provided.'}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 space-y-6">
+                            <div class="bg-gray-900/50 rounded-md p-6">
+                                <h3 class="text-lg font-bold text-white mb-4">Stats</h3>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                                    <div><div class="text-xl font-bold text-white">${user.points || 'N/A'}</div><div class="text-xs text-gray-400 uppercase">Points Earned</div></div>
+                                    <div><div class="text-xl font-bold text-white">${userQuestionsCount}</div><div class="text-xs text-gray-400 uppercase">Questions</div></div>
+                                    <div><div class="text-xl font-bold text-white">${user.answers || 'N/A'}</div><div class="text-xs text-gray-400 uppercase">Answers</div></div>
+                                    <div><div class="text-xl font-bold text-white">${(user.papers || []).length}</div><div class="text-xs text-gray-400 uppercase">Papers</div></div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-900/50 rounded-md p-6">
+                                <h3 class="text-lg font-bold text-white mb-4">Published Research</h3>
+                                <ul class="space-y-2">
+                                    ${(user.papers || []).map(p => `
+                                        <li class="flex items-center">
+                                            <a href="${p.fileURL}" target="_blank" class="text-blue-400 hover:underline">${p.title}</a>
+                                        </li>`).join('') || '<p class="text-gray-400">No papers published.</p>'}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="bg-gray-900/50 rounded-md p-6">
+                                <h3 class="text-lg font-bold text-white mb-4">Details</h3>
+                                <ul class="space-y-2 text-gray-300">
+                                    <li><strong class="font-semibold text-gray-400">College:</strong> ${user.collegeName || 'N/A'}</li>
+                                    <li><strong class="font-semibold text-gray-400">Department:</strong> ${user.department || 'N/A'}</li>
+                                    <li><strong class="font-semibold text-gray-400">Class:</strong> ${user.className || 'N/A'}</li>
+                                    <li><strong class="font-semibold text-gray-400">Mentor:</strong> ${user.mentorName || 'None'}</li>
+                                    <li><strong class="font-semibold text-gray-400">Collaboration:</strong> <span class="${user.wantsToCollaborate ? 'text-green-400' : 'text-red-400'}">${user.wantsToCollaborate ? 'Open to collaboration' : 'Not looking'}</span></li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-900/50 rounded-md p-6">
+                                 <h3 class="text-lg font-bold text-white mb-4">Certifications</h3>
+                                <ul class="space-y-2">
+                                    ${(user.certifications || []).map(cert => `<li><a href="${cert.fileURL}" target="_blank" class="text-blue-400 hover:underline">${cert.name}</a></li>`).join('') || '<p class="text-gray-400">No certifications listed.</p>'}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>`;
             }
-        });
 
-        document.getElementById('askQuestionModal').addEventListener('submit', e => {
-            e.preventDefault();
-            const form = e.target;
-            const title = form.querySelector('input[type="text"]').value;
-            const categoryName = form.querySelector('select').value;
-            const body = form.querySelector('textarea').value;
-            const category = categories.find(c => c.name === categoryName);
-
-            if (title && category && body) {
-                const newQuestion = {
-                    id: Date.now(),
-                    catId: category.id,
-                    title: title,
-                    body: body,
-                    authorId: 'user1',
-                    votes: 0,
-                    answers: []
-                };
-                questions.unshift(newQuestion);
-                form.closest('.fixed').classList.replace('flex', 'hidden');
-                form.reset();
-                navigateTo('questionDetail', newQuestion.id);
+            function renderModals() {
+                document.getElementById('askQuestionModal').innerHTML = `<form class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-2xl"><h2 class="text-2xl font-bold text-white mb-4">Ask a Question</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Title</label><input type="text" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Category</label><select id="ask-question-category" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2"></select></div><div class="mb-4"><label class="block text-gray-400 mb-1">Body</label><textarea rows="6" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Post</button></div></form>`;
+                document.getElementById('docViewerModal').innerHTML = `<div class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-4xl h-5/6 flex flex-col"><h2 id="doc-modal-title" class="text-2xl font-bold text-white mb-4">Document Viewer</h2><div id="doc-modal-content" class="flex-1 overflow-y-auto bg-gray-900/50 p-4 rounded prose prose-invert max-w-none"></div><div class="flex justify-end mt-4"><button type="button" class="modal-cancel-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Close</button></div></div>`;
+                document.getElementById('messageModal').innerHTML = `<div class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-md"><h3 id="message-modal-title" class="text-2xl font-bold text-white mb-4">Message</h3><p id="message-modal-content" class="text-gray-300 mb-6"></p><div class="flex justify-end"><button type="button" class="modal-cancel-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">OK</button></div></div>`;
             }
-        });
 
-        document.getElementById('search-form').addEventListener('submit', e => {
-            e.preventDefault();
-            const query = document.getElementById('search-input').value;
-            if (query) {
-                navigateTo('searchResults', query);
+            function showMessage(title, content) {
+                document.getElementById('message-modal-title').textContent = title;
+                document.getElementById('message-modal-content').textContent = content;
+                document.getElementById('messageModal').classList.replace('hidden', 'flex');
             }
-        });
 
-        // --- INITIAL RENDER ---
-        renderModals();
-        navigateTo('home');
-    });
+            function renderHelperBot() {
+                const botLinks = document.getElementById('helper-bot-links');
+                const links = [ { page: 'facultyCorner', name: 'Faculty' }, { page: 'researchPapers', name: 'Papers' }, { page: 'docs', name: 'Docs' }, { page: 'news', name: 'News' }, { page: 'team', name: 'Teams' }, { page: 'challenges', name: 'Challenges' }];
+                botLinks.innerHTML = links.map(link => `<a href="#" class="nav-link bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-2 rounded-md" data-page="${link.page}">${link.name}</a>`).join('');
+            }
+
+            async function navigateTo(pageKey, dataId = null) {
+                const lastPage = pageHistory[pageHistory.length - 1];
+                if (lastPage.page !== pageKey || lastPage.id !== dataId) {
+                    pageHistory.push({page: pageKey, id: dataId});
+                }
+
+                Object.values(pageElements).forEach(p => p.classList.remove('active'));
+                const targetPage = pageElements[pageKey] || pageElements.home;
+                targetPage.classList.add('active');
+                
+                document.querySelectorAll('.sidebar-link').forEach(link => { link.classList.remove('active'); if (link.dataset.page === pageKey) link.classList.add('active'); });
+                
+                const backButton = document.querySelector('.go-back-btn');
+                backButton.style.display = (pageKey === 'home') ? 'none' : 'flex';
+                
+                await fetchAllData();
+
+                switch (pageKey) {
+                    case 'home': await renderHomePage(); break;
+                    case 'questionDetail': renderQuestionDetailPage(dataId); break;
+                    case 'members': await renderMembersPage(); break;
+                    case 'userProfile': await renderUserProfilePage(dataId); break;
+                    default: await renderHomePage(); break;
+                }
+            }
+            
+            // --- EVENT LISTENERS ---
+
+            document.querySelector('.go-back-btn').addEventListener('click', () => {
+                if (pageHistory.length > 1) {
+                    pageHistory.pop();
+                    const lastPage = pageHistory[pageHistory.length - 1];
+                    navigateTo(lastPage.page, lastPage.id);
+                }
+            });
+
+            document.body.addEventListener('click', async e => {
+                const navLink = e.target.closest('.nav-link');
+                if (navLink) { e.preventDefault(); navigateTo(navLink.dataset.page, navLink.dataset.id); }
+
+                const modalCancelBtn = e.target.closest('.modal-cancel-btn');
+                if (modalCancelBtn) { modalCancelBtn.closest('.fixed').classList.replace('flex', 'hidden'); }
+                
+                if (e.target.closest('#ask-question-header-btn')) { 
+                    const categorySelect = document.getElementById('ask-question-category');
+                    const categoriesSnapshot = await getDocs(collection(db, "categories"));
+                    categorySelect.innerHTML = categoriesSnapshot.docs.map(doc => `<option value="${doc.id}">${doc.data().name}</option>`).join('');
+                    document.getElementById('askQuestionModal').classList.replace('hidden', 'flex'); 
+                }
+                
+                const postAnswerBtn = e.target.closest('.post-answer-btn');
+                if (postAnswerBtn) {
+                    const questionId = postAnswerBtn.dataset.id;
+                    const answerText = document.getElementById('answer-textarea').value;
+                    if (answerText.trim() !== '') {
+                        const questionDocRef = doc(db, "questions", questionId);
+                        const newAnswer = { 
+                            by: currentUser.uid, 
+                            body: answerText, 
+                            createdAt: serverTimestamp(),
+                            likes: [] 
+                        };
+                        await updateDoc(questionDocRef, { answers: arrayUnion(newAnswer) });
+                        document.getElementById('answer-textarea').value = '';
+                    }
+                }
+
+                const likeBtn = e.target.closest('.like-btn');
+                if (likeBtn) {
+                    const questionId = likeBtn.dataset.questionId;
+                    const answerIndex = parseInt(likeBtn.dataset.answerIndex);
+                    const questionDocRef = doc(db, "questions", questionId);
+                    const questionDoc = await getDoc(questionDocRef);
+                    const questionData = questionDoc.data();
+                    const answer = questionData.answers[answerIndex];
+
+                    if (answer.likes.includes(currentUser.uid)) {
+                        answer.likes = answer.likes.filter(uid => uid !== currentUser.uid);
+                    } else {
+                        answer.likes.push(currentUser.uid);
+                    }
+                    
+                    await updateDoc(questionDocRef, { answers: questionData.answers });
+                }
+            });
+
+            document.getElementById('askQuestionModal').addEventListener('submit', async e => {
+                e.preventDefault();
+                const form = e.target;
+                const title = form.querySelector('input[type="text"]').value;
+                const categoryId = form.querySelector('select').value;
+                const body = form.querySelector('textarea').value;
+
+                if (title && categoryId && body) {
+                    const newQuestion = {
+                        catId: categoryId,
+                        title: title,
+                        body: body,
+                        authorId: currentUser.uid,
+                        votes: 0,
+                        answers: [],
+                        createdAt: serverTimestamp(),
+                        solved: false
+                    };
+                    const docRef = await addDoc(collection(db, "questions"), newQuestion);
+                    form.closest('.fixed').classList.replace('flex', 'hidden');
+                    form.reset();
+                    navigateTo('questionDetail', docRef.id);
+                }
+            });
+
+            // --- INITIALIZATION ---
+            updateUserAvatar();
+            renderModals();
+            renderHelperBot();
+            navigateTo('home');
+        });
     </script>
 </body>
 </html>
