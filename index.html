@@ -1,3 +1,4 @@
+<!-- Paste your complete HTML, CSS, and JavaScript code here -->
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
@@ -93,6 +94,43 @@
         }
         .reply-card .reply-body {
             color: #d1d5db;
+        }
+
+        /* Notification Bell Styles */
+        .notification-bell {
+            position: relative;
+        }
+        .notification-dot {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            background-color: #ef4444; /* red-500 */
+            border-radius: 50%;
+            border: 1px solid #111827; /* gray-900 */
+        }
+        #notifications-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 320px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        .notification-item.unread {
+            background-color: #374151; /* gray-700 */
+        }
+
+        /* Challenge Styles */
+        .challenge-option-label.correct {
+            background-color: #166534; /* green-800 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .challenge-option-label.incorrect {
+            background-color: #991b1b; /* red-800 */
+            border-color: #ef4444; /* red-500 */
         }
 
         /* Light Theme Overrides */
@@ -222,6 +260,10 @@
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                         Messages
                     </a>
+                    <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="announcements">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-2.465 9.168-6.088C19.344 12.333 16.618 15.903 12 17.472c-2.453.805-5.073-.298-6.564-2.789z"></path></svg>
+                        Announcements
+                    </a>
                 </nav>
             </div>
 
@@ -283,7 +325,9 @@
             <!-- New Settings Link -->
             <div class="mt-auto">
                 <a href="#" class="flex items-center px-3 py-2 rounded-md hover:bg-gray-700 nav-link sidebar-link" data-page="settings">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.82 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.82 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924-1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.82-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.82-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-1.007 1.11-1.226.55-.22 1.156-.22 1.706 0 .55.22 1.02.684 1.11 1.226l.08 1.118H16.02a1.125 1.125 0 011.12 1.125v1.125h1.118c.542.09.997.56 1.226 1.11.22.55.22 1.156 0 1.706-.22.55-.684 1.02-1.226 1.11l-1.118.08v1.125a1.125 1.125 0 01-1.125 1.125h-1.125l-.08 1.118c-.09.542-.56 1.007-1.11 1.226-.55-.22-1.156-.22-1.706 0-.55-.22-1.02-.684-1.11-1.226l-.08-1.118H7.98a1.125 1.125 0 01-1.12-1.125v-1.125H5.737c-.542-.09-.997-.56-1.226-1.11-.22-.55-.22-1.156 0-1.706.22-.55.684 1.02 1.226-1.11l1.118-.08V7.98a1.125 1.125 0 011.125-1.125h1.125l.08-1.118zM12 15a3 3 0 100-6 3 3 0 000 6z" />
+                    </svg>
                     Settings
                 </a>
             </div>
@@ -331,6 +375,8 @@
                 <div id="userProfilePage" class="page"></div>
                 <div id="activityPage" class="page"></div>
                 <div id="messagesPage" class="page"></div>
+                <div id="announcementsPage" class="page"></div>
+                <div id="announcementDetailPage" class="page"></div>
                 <div id="messageDetailPage" class="page"></div>
                 <div id="searchResultsPage" class="page"></div>
                 <div id="challengesPage" class="page"></div>
@@ -351,13 +397,16 @@
     <div id="askQuestionModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="editQuestionModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4 overflow-y-auto"></div>
-    <div id="messageFacultyModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
+    <div id="messageMemberModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="uploadPaperModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="editPaperModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="uploadDocModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="postNewsModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="createTeamModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="addProjectModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
+    <div id="postAnnouncementModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
+    <div id="createChallengeModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4 overflow-y-auto"></div>
+    <div id="challengeResultModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="messageModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
     <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4"></div>
 
@@ -381,7 +430,7 @@
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, collection, getDocs, getDoc, doc, addDoc, setDoc, updateDoc, deleteDoc, query, where, onSnapshot, serverTimestamp, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, getDoc, doc, addDoc, setDoc, updateDoc, deleteDoc, query, where, onSnapshot, serverTimestamp, arrayUnion, arrayRemove, increment, orderBy, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -402,6 +451,8 @@
         // App state
         let currentUser = null;
         let users = {}; // Local cache for user data
+        let localNotifications = []; // Local cache for notifications
+        let unsubscribeNotifications = null; // To stop listening when user logs out
 
         document.addEventListener('DOMContentLoaded', () => {
         
@@ -422,6 +473,8 @@
                 userProfile: document.getElementById('userProfilePage'),
                 activity: document.getElementById('activityPage'),
                 messages: document.getElementById('messagesPage'),
+                announcements: document.getElementById('announcementsPage'),
+                announcementDetail: document.getElementById('announcementDetailPage'),
                 messageDetail: document.getElementById('messageDetailPage'),
                 searchResults: document.getElementById('searchResultsPage'),
                 challenges: document.getElementById('challengesPage'),
@@ -451,24 +504,26 @@
                             avatar: `https://placehold.co/64x64/7c3aed/ffffff?text=${user.email[0].toUpperCase()}`,
                             level: 'Beginner',
                             points: 0,
-                            isMentor: false
+                            isMentor: false,
+                            daysVisited: 1,
+                            readTime: 0,
+                            topicsViewed: 0,
+                            postsRead: 0,
+                            likesGiven: 0,
+                            likesReceived: 0,
+                            topicsCreated: 0,
+                            postsCreated: 0,
                         };
                         await setDoc(userDocRef, newUserProfile);
-                        
-                        // Also create a leaderboard entry
-                        const leaderboardRef = doc(db, "leaderboard", user.uid);
-                        await setDoc(leaderboardRef, {
-                            name: newUserProfile.name,
-                            avatar: newUserProfile.avatar,
-                            topicsCreated: 0,
-                            repliesPosted: 0,
-                            solutions: 0
-                        });
-
                         currentUser = { uid: user.uid, ...newUserProfile };
                     }
+                    listenForNotifications(currentUser.uid); // Start listening for notifications
                 } else {
                     currentUser = null;
+                    if (unsubscribeNotifications) {
+                        unsubscribeNotifications(); // Stop listening
+                        unsubscribeNotifications = null;
+                    }
                 }
                 updateUserAuthUI();
                 navigateTo('home');
@@ -479,6 +534,15 @@
                 const container = document.getElementById('user-auth-container');
                 if (currentUser) {
                     container.innerHTML = `
+                        <div class="relative notification-bell-container">
+                            <button id="notification-bell-btn" class="text-gray-400 hover:text-white p-2 rounded-full relative">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                                <span id="notification-dot" class="notification-dot hidden"></span>
+                            </button>
+                            <div id="notifications-dropdown" class="bg-gray-800 border border-gray-700 rounded-md shadow-lg hidden">
+                                <!-- Notifications will be rendered here -->
+                            </div>
+                        </div>
                         <img src="${currentUser.avatar}" class="w-8 h-8 rounded-full cursor-pointer nav-link" data-page="userProfile" data-id="${currentUser.uid}" alt="${currentUser.name}">
                         <button id="logout-btn" class="text-sm text-gray-400 hover:text-white">Logout</button>
                     `;
@@ -490,6 +554,73 @@
                 }
             }
             
+            // --- NOTIFICATION FUNCTIONS ---
+            function listenForNotifications(userId) {
+                const q = query(collection(db, "notifications"), where("recipientId", "==", userId));
+
+                unsubscribeNotifications = onSnapshot(q, (snapshot) => {
+                    let notifications = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    notifications.sort((a, b) => {
+                        const dateA = a.createdAt?.toDate() || new Date(0);
+                        const dateB = b.createdAt?.toDate() || new Date(0);
+                        return dateB - dateA;
+                    });
+                    
+                    localNotifications = notifications;
+                    updateNotificationsUI(localNotifications);
+                }, (error) => {
+                    console.error("Error in notification listener:", error);
+                });
+            }
+
+            function updateNotificationsUI(notifications) {
+                const dropdown = document.getElementById('notifications-dropdown');
+                const dot = document.getElementById('notification-dot');
+                if (!dropdown || !dot) return;
+
+                const unreadCount = notifications.filter(n => !n.isRead).length;
+                dot.classList.toggle('hidden', unreadCount === 0);
+                
+                if (notifications.length === 0) {
+                    dropdown.innerHTML = `<div class="p-4 text-center text-gray-400">No notifications yet.</div>`;
+                } else {
+                    dropdown.innerHTML = notifications.map(n => {
+                        return `
+                        <a href="#" class="block p-3 border-b border-gray-700 hover:bg-gray-700 nav-link notification-item ${!n.isRead ? 'unread' : ''}" data-page="${n.link.page}" data-id="${n.link.id}" data-notification-id="${n.id}">
+                            <p class="text-sm text-gray-200">${n.text}</p>
+                            <p class="text-xs text-gray-500 mt-1">${new Date(n.createdAt?.toDate()).toLocaleString()}</p>
+                        </a>
+                        `;
+                    }).join('');
+                }
+            }
+
+            async function markNotificationsAsRead() {
+                const unreadNotifications = localNotifications.filter(n => !n.isRead);
+                if (unreadNotifications.length === 0) return;
+
+                const batch = writeBatch(db);
+                unreadNotifications.forEach(notification => {
+                    const notificationRef = doc(db, "notifications", notification.id);
+                    batch.update(notificationRef, { isRead: true });
+                });
+                await batch.commit();
+            }
+            
+            async function createNotification(recipientId, senderId, type, text, link) {
+                if (recipientId === senderId) return;
+
+                await addDoc(collection(db, "notifications"), {
+                    recipientId,
+                    senderId,
+                    type,
+                    text,
+                    link,
+                    isRead: false,
+                    createdAt: serverTimestamp()
+                });
+            }
+
             // --- DATA FETCHING FUNCTIONS ---
             async function fetchAllData() {
                 const usersSnapshot = await getDocs(collection(db, "users"));
@@ -689,14 +820,17 @@
                     <h1 class="text-2xl font-bold text-white mb-4">Community Members</h1>
                     <div class="space-y-4">
                     ${sortedMembers.map(member => `
-                        <a href="#" class="block bg-gray-900/50 p-4 rounded-md flex items-center space-x-4 hover:bg-gray-700/50 nav-link" data-page="userProfile" data-id="${member.id}">
-                            <img src="${member.avatar}" alt="${member.name}" class="w-12 h-12 rounded-full">
-                            <div class="flex-1">
-                                <h3 class="text-lg font-bold text-white">${member.name}</h3>
-                                <p class="text-gray-400">${member.affiliation || member.level || 'Member'}</p>
-                            </div>
-                            <span class="text-sm font-semibold text-white">${member.points || 'N/A'} Points Earned</span>
-                        </a>
+                        <div class="bg-gray-900/50 p-4 rounded-md flex items-center space-x-4">
+                            <a href="#" class="flex items-center flex-1 nav-link" data-page="userProfile" data-id="${member.id}">
+                                <img src="${member.avatar}" alt="${member.name}" class="w-12 h-12 rounded-full">
+                                <div class="ml-4 flex-1">
+                                    <h3 class="text-lg font-bold text-white">${member.name}</h3>
+                                    <p class="text-gray-400">${member.level || 'Member'}</p>
+                                </div>
+                            </a>
+                            <span class="text-sm font-semibold text-white">${member.points || 0} Points</span>
+                            ${currentUser?.isMentor && member.id !== currentUser.uid ? `<button class="message-member-btn bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-3 rounded-md" data-id="${member.id}" data-name="${member.name}">Message</button>` : ''}
+                        </div>
                     `).join('')}
                     </div>
                 `;
@@ -713,10 +847,6 @@
                 const user = { id: userDocSnap.id, ...userDocSnap.data() };
                 const isCurrentUserProfile = currentUser && user.id === currentUser.uid;
                 
-                const questionsQuery = query(collection(db, "questions"), where("authorId", "==", userId));
-                const questionsSnapshot = await getDocs(questionsQuery);
-                const userQuestionsCount = questionsSnapshot.size;
-
                 pageElements.userProfile.innerHTML = `
                     <div class="bg-gray-900/50 rounded-md">
                         <div class="h-32 bg-blue-800 rounded-t-md"></div>
@@ -736,12 +866,16 @@
                     </div>
                     <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="lg:col-span-2 space-y-6">
-                            <div class="bg-gray-900/50 rounded-md p-6">
-                                <h3 class="text-lg font-bold text-white mb-4">Stats</h3>
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                                    <div><div class="text-xl font-bold text-white">${user.points || 'N/A'}</div><div class="text-xs text-gray-400 uppercase">Points Earned</div></div>
-                                    <div><div class="text-xl font-bold text-white">${userQuestionsCount}</div><div class="text-xs text-gray-400 uppercase">Questions</div></div>
-                                    <div><div class="text-xl font-bold text-white">${user.answers || 'N/A'}</div><div class="text-xs text-gray-400 uppercase">Answers</div></div>
+                             <div class="bg-gray-900/50 rounded-md p-6">
+                                <h3 class="text-lg font-bold text-white mb-4">Summary</h3>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                    <div class="text-center"><div class="text-xl font-bold text-white">${user.daysVisited || 0}</div><div class="text-xs text-gray-400 uppercase">days visited</div></div>
+                                    <div class="text-center"><div class="text-xl font-bold text-white">${user.topicsViewed || 0}</div><div class="text-xs text-gray-400 uppercase">topics viewed</div></div>
+                                    <div class="text-center"><div class="text-xl font-bold text-white">${user.postsRead || 0}</div><div class="text-xs text-gray-400 uppercase">posts read</div></div>
+                                    <div class="text-center"><div class="text-xl font-bold text-white">${user.likesGiven || 0}</div><div class="text-xs text-gray-400 uppercase">likes given</div></div>
+                                    <div class="text-center"><div class="text-xl font-bold text-white">${user.likesReceived || 0}</div><div class="text-xs text-gray-400 uppercase">likes received</div></div>
+                                    <div class="text-center"><div class="text-xl font-bold text-white">${user.topicsCreated || 0}</div><div class="text-xs text-gray-400 uppercase">topics created</div></div>
+                                    <div class="text-center"><div class="text-xl font-bold text-white">${user.postsCreated || 0}</div><div class="text-xs text-gray-400 uppercase">posts created</div></div>
                                 </div>
                             </div>
                         </div>
@@ -752,15 +886,9 @@
                                     <li><strong class="font-semibold text-gray-400">Role:</strong> ${user.isMentor ? 'Mentor' : 'Student'}</li>
                                     <li><strong class="font-semibold text-gray-400">College:</strong> ${user.collegeName || 'N/A'}</li>
                                     <li><strong class="font-semibold text-gray-400">Department:</strong> ${user.department || 'N/A'}</li>
-                                    <li><strong class="font-semibold text-gray-400">Class:</strong> ${user.className || 'N/A'}</li>
+                                    <li><strong class="font-semibold text-gray-400">Year:</strong> ${user.year || 'N/A'}</li>
                                     <li><strong class="font-semibold text-gray-400">Mentor:</strong> ${user.mentorName || 'None'}</li>
                                     <li><strong class="font-semibold text-gray-400">Collaboration:</strong> <span class="${user.wantsToCollaborate ? 'text-green-400' : 'text-red-400'}">${user.wantsToCollaborate ? 'Open to collaboration' : 'Not looking'}</span></li>
-                                </ul>
-                            </div>
-                            <div class="bg-gray-900/50 rounded-md p-6">
-                                 <h3 class="text-lg font-bold text-white mb-4">Certifications</h3>
-                                <ul class="space-y-2">
-                                    ${(user.certifications || []).map(cert => `<li><a href="${cert.fileURL}" target="_blank" class="text-blue-400 hover:underline">${cert.name}</a></li>`).join('') || '<p class="text-gray-400">No certifications listed.</p>'}
                                 </ul>
                             </div>
                         </div>
@@ -788,7 +916,7 @@
                                 <p class="text-gray-300 flex-1 mb-4">${mentor.description || 'No description available.'}</p>
                                 <div class="mt-auto flex space-x-2">
                                     <a href="#" class="flex-1 text-center bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-md nav-link" data-page="userProfile" data-id="${mentor.id}">View Profile</a>
-                                    <button class="flex-1 message-faculty-btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md" data-id="${mentor.id}" data-name="${mentor.name}">Message</button>
+                                    <button class="flex-1 message-member-btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md" data-id="${mentor.id}" data-name="${mentor.name}">Message</button>
                                 </div>
                             </div>
                         `).join('') : '<p class="text-gray-400 col-span-full">No mentors have registered yet.</p>'}
@@ -888,8 +1016,6 @@
                 });
             }
 
-            // --- MORE RENDER FUNCTIONS FOR NEW FEATURES ---
-
             async function renderDocsPage() {
                 const page = pageElements.docs;
                 const docsSnapshot = await getDocs(collection(db, "docs"));
@@ -902,10 +1028,14 @@
                     <div class="space-y-4">
                         ${docs.length > 0 ? docs.map(doc => {
                             const author = users[doc.authorId];
-                            return `<a href="#" class="block bg-gray-900/50 p-4 rounded-md hover:bg-gray-700/50 nav-link" data-page="docDetail" data-id="${doc.id}">
-                                <h3 class="font-semibold text-white">${doc.title}</h3>
-                                <p class="text-xs text-gray-400 mt-1">By ${author?.name || 'Unknown'}</p>
-                            </a>`
+                            return `
+                            <div class="bg-gray-900/50 p-4 rounded-md flex justify-between items-center">
+                                <a href="#" class="flex-1 nav-link" data-page="docDetail" data-id="${doc.id}">
+                                    <h3 class="font-semibold text-white">${doc.title}</h3>
+                                    <p class="text-xs text-gray-400 mt-1">By ${author?.name || 'Unknown'}</p>
+                                </a>
+                                ${currentUser && doc.authorId === currentUser.uid ? `<button class="delete-doc-btn text-sm text-red-400 hover:underline" data-id="${doc.id}">Delete</button>` : ''}
+                            </div>`
                         }).join('') : '<p class="text-gray-400">No learning content has been uploaded yet.</p>'}
                     </div>
                 `;
@@ -939,14 +1069,28 @@
                         <h1 class="text-3xl font-bold text-white">News</h1>
                         <button id="post-news-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Post News</button>
                     </div>
-                    <div class="space-y-4">
-                        ${newsItems.length > 0 ? newsItems.map(item => {
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${newsItems.length > 0 ? newsItems.map((item, index) => {
                             const author = users[item.authorId];
-                            return `<a href="#" class="block bg-gray-900/50 p-4 rounded-md hover:bg-gray-700/50 nav-link" data-page="newsDetail" data-id="${item.id}">
-                                <h3 class="font-semibold text-white">${item.title}</h3>
-                                <p class="text-xs text-gray-400 mt-1">By ${author?.name || 'Unknown'}</p>
-                            </a>`
-                        }).join('') : '<p class="text-gray-400">No news has been posted yet.</p>'}
+                            const colors = ['bg-blue-800', 'bg-indigo-800', 'bg-purple-800', 'bg-pink-800'];
+                            const bgColor = colors[index % colors.length];
+                            return `
+                            <div class="bg-gray-900/50 rounded-lg flex flex-col">
+                                <a href="#" class="block nav-link" data-page="newsDetail" data-id="${item.id}">
+                                    <div class="${bgColor} h-32 flex items-center justify-center p-4 rounded-t-lg">
+                                        <h3 class="font-bold text-white text-center text-lg">${item.title}</h3>
+                                    </div>
+                                </a>
+                                <div class="p-4 flex-1 flex flex-col">
+                                    <p class="text-xs text-gray-400 mb-4">By ${author?.name || 'Unknown'}</p>
+                                    <div class="mt-auto flex justify-between items-center">
+                                        <a href="#" class="text-blue-400 hover:underline nav-link text-sm" data-page="newsDetail" data-id="${item.id}">Read More</a>
+                                        ${currentUser && item.authorId === currentUser.uid ? `<button class="delete-news-btn text-sm text-red-400 hover:underline" data-id="${item.id}">Delete</button>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                            `
+                        }).join('') : '<p class="text-gray-400 col-span-full">No news has been posted yet.</p>'}
                     </div>
                 `;
             }
@@ -1009,10 +1153,10 @@
 
             async function renderLeaderboardPage() {
                 const page = pageElements.leaderboard;
-                const leaderboardSnapshot = await getDocs(collection(db, "leaderboard"));
-                const leaderboardData = leaderboardSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                // Simple sort by topics created for now
-                leaderboardData.sort((a, b) => b.topicsCreated - a.topicsCreated);
+                const usersSnapshot = await getDocs(collection(db, "users"));
+                const leaderboardData = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                leaderboardData.sort((a, b) => (b.points || 0) - (a.points || 0));
 
                 page.innerHTML = `
                     <h1 class="text-3xl font-bold text-white mb-6">Leaderboard</h1>
@@ -1022,9 +1166,9 @@
                                 <tr class="border-b border-gray-700">
                                     <th class="text-left p-4">Rank</th>
                                     <th class="text-left p-4">User</th>
+                                    <th class="text-center p-4">Points</th>
                                     <th class="text-center p-4">Topics Created</th>
-                                    <th class="text-center p-4">Replies Posted</th>
-                                    <th class="text-center p-4">Solutions</th>
+                                    <th class="text-center p-4">Posts Created</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1035,9 +1179,9 @@
                                             <img src="${entry.avatar}" class="w-8 h-8 rounded-full mr-3">
                                             <span>${entry.name}</span>
                                         </td>
-                                        <td class="text-center p-4">${entry.topicsCreated}</td>
-                                        <td class="text-center p-4">${entry.repliesPosted}</td>
-                                        <td class="text-center p-4">${entry.solutions}</td>
+                                        <td class="text-center p-4">${entry.points || 0}</td>
+                                        <td class="text-center p-4">${entry.topicsCreated || 0}</td>
+                                        <td class="text-center p-4">${entry.postsCreated || 0}</td>
                                     </tr>
                                 `).join('')}
                             </tbody>
@@ -1046,20 +1190,288 @@
                 `;
             }
 
+            async function renderProjectsPage() {
+                const page = pageElements.projects;
+                const projectsSnapshot = await getDocs(collection(db, "projects"));
+                const projects = projectsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                page.innerHTML = `
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-3xl font-bold text-white">Community Projects</h1>
+                        <button id="add-project-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Add Your Project</button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        ${projects.length > 0 ? projects.map(project => {
+                             const author = users[project.authorId];
+                             return `
+                            <div class="bg-gray-900/50 rounded-lg p-6 flex flex-col">
+                                <h3 class="text-xl font-bold text-white mb-2">${project.title}</h3>
+                                <p class="text-sm text-gray-400 mb-4">By ${author?.name || 'Unknown'}</p>
+                                <p class="text-gray-300 flex-1 mb-4">${project.shortDescription}</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    ${project.tags.map(tag => `<span class="bg-gray-700 text-xs font-semibold px-2 py-1 rounded-full">${tag}</span>`).join('')}
+                                </div>
+                                <a href="#" class="text-blue-400 hover:underline nav-link mt-auto" data-page="projectDetail" data-id="${project.id}">View Details</a>
+                            </div>
+                            `
+                        }).join('') : '<p class="text-gray-400 col-span-full">No projects have been added yet.</p>'}
+                    </div>
+                `;
+            }
+
+            async function renderProjectDetailPage(projectId) {
+                const page = pageElements.projectDetail;
+                const projectRef = doc(db, "projects", projectId);
+                const projectSnap = await getDoc(projectRef);
+
+                if (!projectSnap.exists()) {
+                    page.innerHTML = `<h1 class="text-2xl font-bold text-red-500">Project not found</h1>`;
+                    return;
+                }
+                const project = projectSnap.data();
+                const author = users[project.authorId];
+
+                page.innerHTML = `
+                     <div class="bg-gray-900/50 rounded-lg p-8">
+                        <h1 class="text-3xl font-bold text-white mb-2">${project.title}</h1>
+                        <p class="text-gray-400 mb-6">By <a href="#" class="text-blue-400 hover:underline nav-link" data-page="userProfile" data-id="${project.authorId}">${author?.name || 'Unknown'}</a></p>
+                        <div class="mb-6">
+                            <h3 class="font-semibold text-white mb-2">Team Members</h3>
+                            <p class="text-gray-300">${project.teamMembers.join(', ')}</p>
+                        </div>
+                        <div class="mb-6">
+                            <h3 class="font-semibold text-white mb-2">Tags</h3>
+                            <div class="flex flex-wrap gap-2">
+                                ${project.tags.map(tag => `<span class="bg-gray-700 text-xs font-semibold px-2 py-1 rounded-full">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                        <h3 class="font-semibold text-white mb-2">Full Details</h3>
+                        <div class="prose prose-invert max-w-none text-gray-300 whitespace-pre-wrap">${project.fullDetails}</div>
+                    </div>
+                `;
+            }
+
+            async function renderAnnouncementsPage() {
+                const page = pageElements.announcements;
+                const announcementsSnapshot = await getDocs(collection(db, "announcements"));
+                const announcements = announcementsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                page.innerHTML = `
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-3xl font-bold text-white">Announcements</h1>
+                        ${currentUser?.isMentor ? `<button id="post-announcement-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Post Announcement</button>` : ''}
+                    </div>
+                    <div class="space-y-4">
+                        ${announcements.length > 0 ? announcements.map(item => {
+                            const author = users[item.authorId];
+                            return `
+                            <div class="bg-gray-900/50 p-4 rounded-md">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-semibold text-white">${item.title}</h3>
+                                        <p class="text-xs text-gray-400 mt-1">By ${author?.name || 'Unknown'}</p>
+                                    </div>
+                                    ${currentUser && item.authorId === currentUser.uid ? `
+                                    <div class="flex space-x-2 text-xs">
+                                        <button class="edit-announcement-btn text-blue-400 hover:underline" data-id="${item.id}">Edit</button>
+                                        <button class="delete-announcement-btn text-red-400 hover:underline" data-id="${item.id}">Delete</button>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                                <p class="text-gray-300 mt-4">${item.content}</p>
+                            </div>`
+                        }).join('') : '<p class="text-gray-400">No announcements have been posted yet.</p>'}
+                    </div>
+                `;
+            }
+
+            async function renderMessagesPage() {
+                const page = pageElements.messages;
+                if (!currentUser) {
+                    page.innerHTML = `<p class="text-gray-400">Please log in to view your messages.</p>`;
+                    return;
+                }
+                
+                const q = query(collection(db, "conversations"), where("participants", "array-contains", currentUser.uid));
+                const querySnapshot = await getDocs(q);
+                const conversations = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                page.innerHTML = `
+                    <h1 class="text-3xl font-bold text-white mb-6">Messages</h1>
+                    <div class="space-y-4">
+                    ${conversations.length > 0 ? conversations.map(convo => {
+                        const otherUserId = convo.participants.find(p => p !== currentUser.uid);
+                        const otherUser = users[otherUserId];
+                        const lastMessage = convo.messages[convo.messages.length - 1];
+                        return `
+                        <a href="#" class="block bg-gray-900/50 p-4 rounded-md hover:bg-gray-700/50 nav-link" data-page="messageDetail" data-id="${convo.id}">
+                            <div class="flex items-center">
+                                <img src="${otherUser?.avatar}" alt="${otherUser?.name}" class="w-12 h-12 rounded-full mr-4">
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-white">${otherUser?.name || 'Unknown User'}</h3>
+                                    <p class="text-sm text-gray-400 truncate">${lastMessage.text}</p>
+                                </div>
+                            </div>
+                        </a>
+                        `
+                    }).join('') : '<p class="text-gray-400">You have no messages.</p>'}
+                    </div>
+                `;
+            }
+
+            function renderMessageDetailPage(conversationId) {
+                const page = pageElements.messageDetail;
+                const conversationRef = doc(db, "conversations", conversationId);
+                
+                onSnapshot(conversationRef, (docSnap) => {
+                    if (!docSnap.exists()) {
+                        page.innerHTML = `<h1 class="text-2xl font-bold text-red-500">Conversation not found.</h1>`;
+                        return;
+                    }
+                    const conversation = { id: docSnap.id, ...docSnap.data() };
+                    const otherUserId = conversation.participants.find(p => p !== currentUser.uid);
+                    const otherUser = users[otherUserId];
+
+                    page.innerHTML = `
+                        <div class="flex flex-col h-[calc(100vh-10rem)]">
+                            <div class="border-b border-gray-700 p-4">
+                                <h2 class="text-xl font-bold text-white">Conversation with ${otherUser?.name || 'Unknown'}</h2>
+                            </div>
+                            <div class="flex-1 overflow-y-auto p-4 space-y-4">
+                                ${conversation.messages.map(msg => {
+                                    const isSender = msg.from === currentUser.uid;
+                                    const author = users[msg.from];
+                                    return `
+                                    <div class="flex items-start gap-3 ${isSender ? 'flex-row-reverse' : ''}">
+                                        <img src="${author?.avatar}" class="w-8 h-8 rounded-full">
+                                        <div class="p-3 rounded-lg ${isSender ? 'bg-blue-600' : 'bg-gray-700'}">
+                                            <p>${msg.text}</p>
+                                        </div>
+                                    </div>
+                                    `
+                                }).join('')}
+                            </div>
+                            <div class="p-4 border-t border-gray-700">
+                                <form id="reply-form" class="flex gap-4">
+                                    <input type="hidden" name="conversationId" value="${conversation.id}">
+                                    <input type="hidden" name="recipientId" value="${otherUserId}">
+                                    <textarea name="replyText" class="flex-1 bg-gray-700 rounded p-2" rows="2" placeholder="Type your reply..."></textarea>
+                                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Send</button>
+                                </form>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            async function renderChallengesPage() {
+                const page = pageElements.challenges;
+                const challengesSnapshot = await getDocs(collection(db, "challenges"));
+                const challenges = challengesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                page.innerHTML = `
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-3xl font-bold text-white">Challenges</h1>
+                        ${currentUser?.isMentor ? `<button id="create-challenge-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Create Challenge</button>` : ''}
+                    </div>
+                    <div class="space-y-4">
+                        ${challenges.length > 0 ? challenges.map(challenge => {
+                            const creator = users[challenge.creatorId];
+                            const canTakeChallenge = currentUser && currentUser.uid !== challenge.creatorId && !(currentUser.completedChallenges || []).includes(challenge.id);
+                            return `
+                            <div class="bg-gray-900/50 p-4 rounded-md flex justify-between items-center">
+                                <div>
+                                    <h3 class="font-semibold text-white">${challenge.title}</h3>
+                                    <p class="text-xs text-gray-400 mt-1">By ${creator?.name || 'Unknown'}</p>
+                                </div>
+                                ${ canTakeChallenge ? `<button class="take-challenge-btn bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-2 px-3 rounded-md" data-id="${challenge.id}">Take Quiz</button>` : `<span class="text-xs text-gray-500">${currentUser?.uid === challenge.creatorId ? 'You created this' : 'Already taken'}</span>` }
+                            </div>`
+                        }).join('') : '<p class="text-gray-400">No challenges have been posted yet.</p>'}
+                    </div>
+                `;
+            }
+
+            async function renderChallengeDetailPage(challengeId) {
+                const page = pageElements.challengeDetail;
+                const challengeRef = doc(db, "challenges", challengeId);
+                const challengeSnap = await getDoc(challengeRef);
+
+                if (!challengeSnap.exists()) {
+                    page.innerHTML = `<h1 class="text-2xl font-bold text-red-500">Challenge not found</h1>`;
+                    return;
+                }
+                const challenge = {id: challengeSnap.id, ...challengeSnap.data()};
+                
+                page.innerHTML = `
+                    <h1 class="text-3xl font-bold text-white mb-2">${challenge.title}</h1>
+                    <p class="text-gray-400 mb-6">Each correct answer is worth 3 points.</p>
+                    <form id="take-challenge-form" data-id="${challenge.id}">
+                        <div class="space-y-8">
+                        ${challenge.questions.map((q, index) => `
+                            <div class="bg-gray-900/50 p-6 rounded-lg">
+                                <p class="font-semibold text-white mb-4">${index + 1}. ${q.questionText}</p>
+                                <div class="space-y-3">
+                                    ${q.options.map((opt, optIndex) => `
+                                        <div>
+                                            <input type="radio" id="q${index}_opt${optIndex}" name="question_${index}" value="${optIndex}" class="hidden peer">
+                                            <label for="q${index}_opt${optIndex}" class="block p-3 rounded-md border-2 border-gray-700 cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-900/50 hover:bg-gray-700/50">
+                                                ${String.fromCharCode(97 + optIndex)}) ${opt}
+                                            </label>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                        </div>
+                        <div class="mt-8 text-right">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-md">Submit</button>
+                        </div>
+                    </form>
+                `;
+            }
+
+            function renderChallengeQuestionFields(num) {
+                const container = document.getElementById('challenge-questions-container');
+                if (!container) return;
+                container.innerHTML = '';
+                for (let i = 0; i < num; i++) {
+                    container.innerHTML += `
+                        <div class="border-t border-gray-700 pt-4">
+                            <label class="block text-gray-400 mb-2 font-semibold">Question ${i + 1}</label>
+                            <textarea name="q_${i}_text" class="w-full bg-gray-700 rounded p-2 mb-2" placeholder="Question text" required></textarea>
+                            <input type="text" name="q_${i}_opt_0" class="w-full bg-gray-700 rounded p-2 mb-2" placeholder="Option A" required>
+                            <input type="text" name="q_${i}_opt_1" class="w-full bg-gray-700 rounded p-2 mb-2" placeholder="Option B" required>
+                            <input type="text" name="q_${i}_opt_2" class="w-full bg-gray-700 rounded p-2 mb-2" placeholder="Option C" required>
+                            <input type="text" name="q_${i}_opt_3" class="w-full bg-gray-700 rounded p-2 mb-2" placeholder="Option D" required>
+                            <label class="block text-gray-400 mb-1 text-sm">Correct Answer</label>
+                            <select name="q_${i}_correct" class="w-full bg-gray-700 rounded p-2">
+                                <option value="0">Option A</option>
+                                <option value="1">Option B</option>
+                                <option value="2">Option C</option>
+                                <option value="3">Option D</option>
+                            </select>
+                        </div>
+                    `;
+                }
+            }
 
             function renderModals() {
                 document.getElementById('signUpModal').innerHTML = `<form id="signup-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-md"><h2 class="text-2xl font-bold text-white mb-4">Create Account</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Email</label><input type="email" name="email" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Password</label><input type="password" name="password" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><p class="text-red-400 text-sm mb-4 h-5" id="signup-error"></p><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Sign Up</button></div></form>`;
                 document.getElementById('logInModal').innerHTML = `<form id="login-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-md"><h2 class="text-2xl font-bold text-white mb-4">Log In</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Email</label><input type="email" name="email" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Password</label><input type="password" name="password" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><p class="text-red-400 text-sm mb-4 h-5" id="login-error"></p><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Log In</button></div></form>`;
                 document.getElementById('editProfileModal').innerHTML = `<form id="edit-profile-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-2xl space-y-4"></form>`;
                 document.getElementById('askQuestionModal').innerHTML = `<form id="ask-question-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-2xl"><h2 class="text-2xl font-bold text-white mb-4">Ask a Question</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Title</label><input type="text" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Category</label><select id="ask-question-category" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2"></select></div><div class="mb-4"><label class="block text-gray-400 mb-1">Body</label><textarea rows="6" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Post</button></div></form>`;
-                document.getElementById('messageFacultyModal').innerHTML = `<form id="message-faculty-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-2xl"><h2 id="message-faculty-title" class="text-2xl font-bold text-white mb-4">Message Faculty</h2><input type="hidden" name="recipientId"><div class="mb-4"><label class="block text-gray-400 mb-1">Subject</label><input type="text" name="subject" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Message</label><textarea name="body" rows="6" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Send Message</button></div></form>`;
+                document.getElementById('messageMemberModal').innerHTML = `<form id="message-member-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-2xl"><h2 id="message-member-title" class="text-2xl font-bold text-white mb-4">Message Member</h2><input type="hidden" name="recipientId"><div class="mb-4"><label class="block text-gray-400 mb-1">Subject</label><input type="text" name="subject" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Message</label><textarea name="body" rows="6" class="w-full bg-gray-700 rounded p-2 focus:outline-none ring-blue-500 focus:ring-2" required></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Send Message</button></div></form>`;
                 document.getElementById('uploadPaperModal').innerHTML = `<form id="upload-paper-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-3xl"><h2 class="text-2xl font-bold text-white mb-4">Upload Research Paper</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Title</label><input type="text" name="title" class="w-full bg-gray-700 rounded p-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Publish Date</label><input type="date" name="publishDate" class="w-full bg-gray-700 rounded p-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Mentor (if any)</label><input type="text" name="mentor" class="w-full bg-gray-700 rounded p-2"></div><div class="mb-4"><label class="block text-gray-400 mb-1">Content (paste here)</label><textarea name="content" rows="10" class="w-full bg-gray-700 rounded p-2" required></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Submit Paper</button></div></form>`;
                 document.getElementById('editPaperModal').innerHTML = `<form id="edit-paper-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-3xl"><h2 class="text-2xl font-bold text-white mb-4">Edit Research Paper</h2><input type="hidden" name="paperId"><div class="mb-4"><label class="block text-gray-400 mb-1">Title</label><input type="text" name="title" class="w-full bg-gray-700 rounded p-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Publish Date</label><input type="date" name="publishDate" class="w-full bg-gray-700 rounded p-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Mentor (if any)</label><input type="text" name="mentor" class="w-full bg-gray-700 rounded p-2"></div><div class="mb-4"><label class="block text-gray-400 mb-1">Content (paste here)</label><textarea name="content" rows="10" class="w-full bg-gray-700 rounded p-2" required></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Save Changes</button></div></form>`;
                 document.getElementById('uploadDocModal').innerHTML = `<form id="upload-doc-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-3xl"><h2 class="text-2xl font-bold text-white mb-4">Upload Learning Content</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Title</label><input type="text" name="title" class="w-full bg-gray-700 rounded p-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Content</label><textarea name="content" rows="10" class="w-full bg-gray-700 rounded p-2" required></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Upload</button></div></form>`;
                 document.getElementById('postNewsModal').innerHTML = `<form id="post-news-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-3xl"><h2 class="text-2xl font-bold text-white mb-4">Post News</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Title</label><input type="text" name="title" class="w-full bg-gray-700 rounded p-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Source URL (optional)</label><input type="url" name="sourceURL" class="w-full bg-gray-700 rounded p-2"></div><div class="mb-4"><label class="block text-gray-400 mb-1">Content</label><textarea name="content" rows="8" class="w-full bg-gray-700 rounded p-2" required></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Post</button></div></form>`;
                 document.getElementById('createTeamModal').innerHTML = `<form id="create-team-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-2xl"><h2 class="text-2xl font-bold text-white mb-4">Create a Team</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Project Title</label><input type="text" name="projectTitle" class="w-full bg-gray-700 rounded p-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Description</label><textarea name="description" rows="5" class="w-full bg-gray-700 rounded p-2" required></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Create Team</button></div></form>`;
+                document.getElementById('addProjectModal').innerHTML = `<form id="add-project-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-2xl"><h2 class="text-2xl font-bold text-white mb-4">Add Your Project</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Project Title</label><input type="text" name="projectTitle" class="w-full bg-gray-700 rounded p-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Short Description</label><input type="text" name="shortDescription" class="w-full bg-gray-700 rounded p-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Team Members (comma-separated)</label><input type="text" name="teamMembers" class="w-full bg-gray-700 rounded p-2"></div><div class="mb-4"><label class="block text-gray-400 mb-1">Tags (comma-separated)</label><input type="text" name="tags" class="w-full bg-gray-700 rounded p-2"></div><div class="mb-4"><label class="block text-gray-400 mb-1">Full Details</label><textarea name="fullDetails" rows="6" class="w-full bg-gray-700 rounded p-2" required></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Add Project</button></div></form>`;
+                document.getElementById('postAnnouncementModal').innerHTML = `<form id="post-announcement-form" class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-2xl"><h2 class="text-2xl font-bold text-white mb-4">Post Announcement</h2><input type="hidden" name="announcementId"><div class="mb-4"><label class="block text-gray-400 mb-1">Title</label><input type="text" name="title" class="w-full bg-gray-700 rounded p-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Content</label><textarea name="content" rows="6" class="w-full bg-gray-700 rounded p-2" required></textarea></div><div class="flex justify-end space-x-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Post</button></div></form>`;
+                document.getElementById('createChallengeModal').innerHTML = `<div class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-3xl max-h-[80vh] flex flex-col"><form id="create-challenge-form" class="flex flex-col flex-1"><h2 class="text-2xl font-bold text-white mb-6">Create New Challenge</h2><div class="mb-4"><label class="block text-gray-400 mb-1">Challenge Title</label><input type="text" name="title" class="w-full bg-gray-700 rounded p-2" required></div><div class="mb-4"><label class="block text-gray-400 mb-1">Number of Questions</label><select name="numQuestions" class="w-full bg-gray-700 rounded p-2"><option value="5">5</option><option value="10">10</option></select></div><div id="challenge-questions-container" class="space-y-6 overflow-y-auto flex-1 pr-2"></div><div class="flex justify-end space-x-4 mt-6 border-t border-gray-700 pt-4"><button type="button" class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">Post MCQ</button></div></form></div>`;
+                document.getElementById('challengeResultModal').innerHTML = `<div class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-2xl"><h2 id="challenge-result-title" class="text-2xl font-bold text-white mb-4">Quiz Results</h2><p id="challenge-result-score" class="text-lg text-white mb-6"></p><div id="challenge-result-details" class="space-y-4 max-h-96 overflow-y-auto"></div><div class="flex justify-end mt-6"><button type="button" class="modal-cancel-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Close</button></div></div>`;
                 document.getElementById('docViewerModal').innerHTML = `<div class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-4xl h-5/6 flex flex-col"><h2 id="doc-modal-title" class="text-2xl font-bold text-white mb-4">Document Viewer</h2><div id="doc-modal-content" class="flex-1 overflow-y-auto bg-gray-900/50 p-4 rounded prose prose-invert max-w-none"></div><div class="flex justify-end mt-4"><button type="button" class="modal-cancel-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Close</button></div></div>`;
-                document.getElementById('messageModal').innerHTML = `<div class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-md"><h3 id="message-modal-title" class="text-2xl font-bold text-white mb-4">Message</h3><p id="message-modal-content" class="text-gray-300 mb-6"></p><div class="flex justify-end"><button type="button" class="modal-cancel-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">OK</button></div></div>`;
+                document.getElementById('messageModal').innerHTML = `<div class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-md"><h3 id="message-modal-title" class="text-2xl font-bold text-white mb-4">Message</h3><p id="message-modal-content" class="text-gray-300 mb-6"></p><div class="flex justify-end"><button type="button" class="modal-cancel-btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md">OK</button></div></div>`;
                 document.getElementById('confirmModal').innerHTML = `<div class="bg-gray-800 border border-gray-700 rounded-lg p-8 w-full max-w-md"><h3 id="confirm-modal-title" class="text-2xl font-bold text-white mb-4">Are you sure?</h3><p id="confirm-modal-content" class="text-gray-300 mb-6"></p><div class="flex justify-end space-x-4"><button type="button" id="confirm-cancel-btn" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-md">Cancel</button><button type="button" id="confirm-ok-btn" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md">Confirm</button></div></div>`;
             }
 
@@ -1131,18 +1543,28 @@
                 switch (pageKey) {
                     case 'home': await renderHomePage(); break;
                     case 'questionList': await renderQuestionListPage(dataId); break;
-                    case 'questionDetail': renderQuestionDetailPage(dataId); break;
+                    case 'questionDetail': 
+                        if(currentUser) await updateDoc(doc(db, "users", currentUser.uid), { topicsViewed: increment(1) });
+                        renderQuestionDetailPage(dataId); 
+                        break;
                     case 'members': await renderMembersPage(); break;
                     case 'userProfile': await renderUserProfilePage(dataId); break;
                     case 'facultyCorner': await renderFacultyCornerPage(); break;
                     case 'researchPapers': await renderResearchPapersPage(); break;
-                    case 'researchPaperDetail': renderResearchPaperDetailPage(dataId); break;
+                    case 'researchPaperDetail': await renderResearchPaperDetailPage(dataId); break;
                     case 'docs': await renderDocsPage(); break;
                     case 'docDetail': await renderDocDetailPage(dataId); break;
                     case 'news': await renderNewsPage(); break;
                     case 'newsDetail': await renderNewsDetailPage(dataId); break;
                     case 'team': await renderTeamFinderPage(); break;
                     case 'leaderboard': await renderLeaderboardPage(); break;
+                    case 'projects': await renderProjectsPage(); break;
+                    case 'projectDetail': await renderProjectDetailPage(dataId); break;
+                    case 'announcements': await renderAnnouncementsPage(); break;
+                    case 'messages': await renderMessagesPage(); break;
+                    case 'messageDetail': await renderMessageDetailPage(dataId); break;
+                    case 'challenges': await renderChallengesPage(); break;
+                    case 'challengeDetail': await renderChallengeDetailPage(dataId); break;
                     default: await renderHomePage(); break;
                 }
             }
@@ -1158,8 +1580,21 @@
             });
 
             document.body.addEventListener('click', async e => {
+                // Close notification dropdown if clicking outside
+                const dropdown = document.getElementById('notifications-dropdown');
+                const bellContainer = e.target.closest('.notification-bell-container');
+                if (dropdown && !dropdown.classList.contains('hidden') && !bellContainer) {
+                    dropdown.classList.add('hidden');
+                }
+
                 const navLink = e.target.closest('.nav-link');
-                if (navLink) { e.preventDefault(); navigateTo(navLink.dataset.page, navLink.dataset.id); }
+                if (navLink) { 
+                    e.preventDefault(); 
+                    navigateTo(navLink.dataset.page, navLink.dataset.id); 
+                    // Close dropdown after navigation
+                    const dropdown = document.getElementById('notifications-dropdown');
+                    if (dropdown) dropdown.classList.add('hidden');
+                }
 
                 const modalCancelBtn = e.target.closest('.modal-cancel-btn');
                 if (modalCancelBtn) { modalCancelBtn.closest('.fixed').classList.replace('flex', 'hidden'); }
@@ -1168,6 +1603,18 @@
                 if (e.target.id === 'login-btn' || e.target.id === 'login-from-reply-btn') { document.getElementById('logInModal').classList.replace('hidden', 'flex'); }
                 if (e.target.id === 'logout-btn') { await signOut(auth); }
 
+                 if (e.target.closest('#helper-bot-trigger')) {
+                    document.getElementById('helper-bot-container').classList.toggle('open');
+                }
+
+                if (e.target.closest('#notification-bell-btn')) {
+                    const dropdown = document.getElementById('notifications-dropdown');
+                    dropdown.classList.toggle('hidden');
+                    if (!dropdown.classList.contains('hidden')) {
+                        markNotificationsAsRead();
+                    }
+                }
+
                 if (e.target.id === 'edit-profile-btn') {
                     const form = document.getElementById('edit-profile-form');
                     form.innerHTML = `
@@ -1175,7 +1622,7 @@
                         <div><label class="block text-gray-400 mb-1">Name</label><input type="text" name="name" class="w-full bg-gray-700 rounded p-2" value="${currentUser.name || ''}"></div>
                         <div><label class="block text-gray-400 mb-1">College</label><input type="text" name="collegeName" class="w-full bg-gray-700 rounded p-2" value="${currentUser.collegeName || ''}"></div>
                         <div><label class="block text-gray-400 mb-1">Department</label><input type="text" name="department" class="w-full bg-gray-700 rounded p-2" value="${currentUser.department || ''}"></div>
-                        <div><label class="block text-gray-400 mb-1">Class</label><input type="text" name="className" class="w-full bg-gray-700 rounded p-2" value="${currentUser.className || ''}"></div>
+                        <div><label class="block text-gray-400 mb-1">Year</label><input type="text" name="year" class="w-full bg-gray-700 rounded p-2" value="${currentUser.year || ''}"></div>
                         <div><label class="block text-gray-400 mb-1">Mentor</label><input type="text" name="mentorName" class="w-full bg-gray-700 rounded p-2" value="${currentUser.mentorName || ''}"></div>
                         <div><label class="block text-gray-400 mb-1">Collaboration</label><select name="wantsToCollaborate" class="w-full bg-gray-700 rounded p-2"><option value="true" ${currentUser.wantsToCollaborate ? 'selected' : ''}>Looking for collaboration</option><option value="false" ${!currentUser.wantsToCollaborate ? 'selected' : ''}>Not looking</option></select></div>
                         <div><label class="block text-gray-400 mb-1">Role</label><select name="isMentor" class="w-full bg-gray-700 rounded p-2"><option value="true" ${currentUser.isMentor ? 'selected' : ''}>I am a mentor/faculty</option><option value="false" ${!currentUser.isMentor ? 'selected' : ''}>I am a student</option></select></div>
@@ -1184,16 +1631,16 @@
                     document.getElementById('editProfileModal').classList.replace('hidden', 'flex');
                 }
 
-                const messageFacultyBtn = e.target.closest('.message-faculty-btn');
-                if (messageFacultyBtn) {
+                const messageMemberBtn = e.target.closest('.message-member-btn');
+                if (messageMemberBtn) {
                     if (!currentUser) {
-                        showMessage('Login Required', 'Please log in to message a faculty member.');
+                        showMessage('Login Required', 'Please log in to message a member.');
                         return;
                     }
-                    const recipientId = messageFacultyBtn.dataset.id;
-                    const recipientName = messageFacultyBtn.dataset.name;
-                    const modal = document.getElementById('messageFacultyModal');
-                    modal.querySelector('#message-faculty-title').textContent = `Message ${recipientName}`;
+                    const recipientId = messageMemberBtn.dataset.id;
+                    const recipientName = messageMemberBtn.dataset.name;
+                    const modal = document.getElementById('messageMemberModal');
+                    modal.querySelector('#message-member-title').textContent = `Message ${recipientName}`;
                     modal.querySelector('input[name="recipientId"]').value = recipientId;
                     modal.classList.replace('hidden', 'flex');
                 }
@@ -1216,6 +1663,42 @@
                 if (e.target.id === 'create-team-btn') {
                     if (!currentUser) { showMessage('Login Required', 'Please log in to create a team.'); return; }
                     document.getElementById('createTeamModal').classList.replace('hidden', 'flex');
+                }
+
+                if (e.target.id === 'add-project-btn') {
+                    if (!currentUser) { showMessage('Login Required', 'Please log in to add a project.'); return; }
+                    document.getElementById('addProjectModal').classList.replace('hidden', 'flex');
+                }
+
+                if (e.target.id === 'post-announcement-btn') {
+                    const form = document.getElementById('post-announcement-form');
+                    form.reset();
+                    form.announcementId.value = '';
+                    document.getElementById('postAnnouncementModal').classList.replace('hidden', 'flex');
+                }
+
+                const editAnnouncementBtn = e.target.closest('.edit-announcement-btn');
+                if (editAnnouncementBtn) {
+                    const announcementId = editAnnouncementBtn.dataset.id;
+                    const announcementDoc = await getDoc(doc(db, "announcements", announcementId));
+                    if (announcementDoc.exists()) {
+                        const announcement = announcementDoc.data();
+                        const form = document.getElementById('post-announcement-form');
+                        form.announcementId.value = announcementId;
+                        form.title.value = announcement.title;
+                        form.content.value = announcement.content;
+                        document.getElementById('postAnnouncementModal').classList.replace('hidden', 'flex');
+                    }
+                }
+
+                const deleteAnnouncementBtn = e.target.closest('.delete-announcement-btn');
+                if (deleteAnnouncementBtn) {
+                    const announcementId = deleteAnnouncementBtn.dataset.id;
+                    showConfirm("Delete Announcement?", "Are you sure you want to delete this announcement?", async () => {
+                        await deleteDoc(doc(db, "announcements", announcementId));
+                        showMessage("Success", "Announcement has been deleted.");
+                        navigateTo('announcements');
+                    });
                 }
 
                 const expressInterestBtn = e.target.closest('.express-interest-btn');
@@ -1250,8 +1733,31 @@
                     const paperId = deletePaperBtn.dataset.id;
                     showConfirm("Delete Paper?", "Are you sure you want to delete this paper? This cannot be undone.", async () => {
                         await deleteDoc(doc(db, "papers", paperId));
+                        await updateDoc(doc(db, "users", currentUser.uid), { points: increment(-100) });
                         showMessage("Success", "Paper has been deleted.");
                         navigateTo('researchPapers');
+                    });
+                }
+
+                const deleteDocBtn = e.target.closest('.delete-doc-btn');
+                if(deleteDocBtn) {
+                    const docId = deleteDocBtn.dataset.id;
+                    showConfirm("Delete Document?", "Are you sure you want to delete this document?", async () => {
+                        await deleteDoc(doc(db, "docs", docId));
+                        await updateDoc(doc(db, "users", currentUser.uid), { points: increment(-40) });
+                        showMessage("Success", "Document has been deleted.");
+                        navigateTo('docs');
+                    });
+                }
+
+                const deleteNewsBtn = e.target.closest('.delete-news-btn');
+                if(deleteNewsBtn) {
+                    const newsId = deleteNewsBtn.dataset.id;
+                    showConfirm("Delete News?", "Are you sure you want to delete this news item?", async () => {
+                        await deleteDoc(doc(db, "news", newsId));
+                        await updateDoc(doc(db, "users", currentUser.uid), { points: increment(-10) });
+                        showMessage("Success", "News item has been deleted.");
+                        navigateTo('news');
                     });
                 }
 
@@ -1273,13 +1779,28 @@
                     const answerText = document.getElementById('answer-textarea').value;
                     if (answerText.trim() !== '') {
                         const questionDocRef = doc(db, "questions", questionId);
+                        const questionDoc = await getDoc(questionDocRef);
+                        const questionData = questionDoc.data();
+
                         const newAnswer = { 
                             by: currentUser.uid, 
                             body: answerText, 
-                            createdAt: new Date(), // FIX: Use new Date() instead of serverTimestamp()
+                            createdAt: new Date(),
                             likes: [] 
                         };
                         await updateDoc(questionDocRef, { answers: arrayUnion(newAnswer) });
+                        
+                        await createNotification(
+                            questionData.authorId,
+                            currentUser.uid,
+                            'reply',
+                            `${currentUser.name} replied to your question: "${questionData.title.substring(0, 30)}..."`,
+                            { page: 'questionDetail', id: questionId }
+                        );
+                        
+                        const userDocRef = doc(db, "users", currentUser.uid);
+                        await updateDoc(userDocRef, { postsCreated: increment(1), points: increment(5) });
+
                         document.getElementById('answer-textarea').value = '';
                     }
                 }
@@ -1313,14 +1834,39 @@
                     const questionDoc = await getDoc(questionDocRef);
                     const questionData = questionDoc.data();
                     const answer = questionData.answers[answerIndex];
+                    const answerAuthorRef = doc(db, "users", answer.by);
 
-                    if (answer.likes.includes(currentUser.uid)) {
+                    const isLiked = answer.likes.includes(currentUser.uid);
+
+                    if (isLiked) {
                         answer.likes = answer.likes.filter(uid => uid !== currentUser.uid);
+                        await updateDoc(doc(db, "users", currentUser.uid), { likesGiven: increment(-1) });
+                        await updateDoc(answerAuthorRef, { likesReceived: increment(-1), points: increment(-1) });
                     } else {
                         answer.likes.push(currentUser.uid);
+                        await updateDoc(doc(db, "users", currentUser.uid), { likesGiven: increment(1) });
+                        await updateDoc(answerAuthorRef, { likesReceived: increment(1), points: increment(1) });
+                        
+                        await createNotification(
+                            answer.by,
+                            currentUser.uid,
+                            'like',
+                            `${currentUser.name} liked your answer in: "${questionData.title.substring(0, 30)}..."`,
+                            { page: 'questionDetail', id: questionId }
+                        );
                     }
                     
                     await updateDoc(questionDocRef, { answers: questionData.answers });
+                }
+
+                if (e.target.id === 'create-challenge-btn') {
+                    document.getElementById('createChallengeModal').classList.replace('hidden', 'flex');
+                    renderChallengeQuestionFields(5); // Render initial 5 questions
+                }
+
+                const takeChallengeBtn = e.target.closest('.take-challenge-btn');
+                if (takeChallengeBtn) {
+                    navigateTo('challengeDetail', takeChallengeBtn.dataset.id);
                 }
             });
 
@@ -1375,12 +1921,15 @@
                             name: form.name.value,
                             collegeName: form.collegeName.value,
                             department: form.department.value,
-                            className: form.className.value,
+                            year: form.year.value,
                             mentorName: form.mentorName.value,
                             wantsToCollaborate: form.wantsToCollaborate.value === 'true',
                             isMentor: form.isMentor.value === 'true'
                         };
                         const userDocRef = doc(db, "users", currentUser.uid);
+                        if (!currentUser.collegeName && updatedProfile.collegeName) {
+                            updatedProfile.points = increment(10);
+                        }
                         await updateDoc(userDocRef, updatedProfile);
                         currentUser = { ...currentUser, ...updatedProfile };
                         document.getElementById('editProfileModal').classList.replace('flex', 'hidden');
@@ -1405,28 +1954,96 @@
                                 solved: false
                             };
                             const docRef = await addDoc(collection(db, "questions"), newQuestion);
+                            
+                            const userDocRef = doc(db, "users", currentUser.uid);
+                            await updateDoc(userDocRef, { topicsCreated: increment(1), points: increment(2) });
+
                             form.closest('.fixed').classList.replace('flex', 'hidden');
                             form.reset();
                             navigateTo('questionDetail', docRef.id);
                         }
                         break;
                     }
-                    case 'message-faculty-form': {
+                    case 'message-member-form': {
                         if (!currentUser) return;
                         const form = e.target;
-                        const newMessage = {
-                            toId: form.recipientId.value,
-                            fromId: currentUser.uid,
-                            fromName: currentUser.name,
-                            subject: form.subject.value,
-                            body: form.body.value,
-                            createdAt: serverTimestamp(),
-                            isRead: false
-                        };
-                        await addDoc(collection(db, "messages"), newMessage);
+                        const recipientId = form.recipientId.value;
+                        const messageText = form.body.value;
+                        
+                        const conversationQuery = query(collection(db, "conversations"), where("participants", "array-contains", currentUser.uid));
+                        const querySnapshot = await getDocs(conversationQuery);
+                        let existingConvo = null;
+                        querySnapshot.forEach(doc => {
+                            const data = doc.data();
+                            if(data.participants.includes(recipientId)) {
+                                existingConvo = { id: doc.id, ...data };
+                            }
+                        });
+
+                        let convoId;
+                        if (existingConvo) {
+                            convoId = existingConvo.id;
+                            const convoRef = doc(db, "conversations", convoId);
+                            await updateDoc(convoRef, {
+                                messages: arrayUnion({
+                                    from: currentUser.uid,
+                                    text: messageText,
+                                    createdAt: new Date(),
+                                })
+                            });
+                        } else {
+                            const newConvo = {
+                                participants: [currentUser.uid, recipientId],
+                                messages: [{
+                                    from: currentUser.uid,
+                                    text: messageText,
+                                    createdAt: new Date(),
+                                }]
+                            };
+                            const docRef = await addDoc(collection(db, "conversations"), newConvo);
+                            convoId = docRef.id;
+                        }
+
+                        await createNotification(
+                            recipientId,
+                            currentUser.uid,
+                            'message',
+                            `${currentUser.name} sent you a new message.`,
+                            { page: 'messageDetail', id: convoId }
+                        );
+                        
                         form.closest('.fixed').classList.replace('flex', 'hidden');
                         form.reset();
                         showMessage("Success", "Your message has been sent!");
+                        navigateTo('messages');
+                        break;
+                    }
+                    case 'reply-form': {
+                        if (!currentUser) return;
+                        const form = e.target;
+                        const conversationId = form.conversationId.value;
+                        const recipientId = form.recipientId.value;
+                        const replyText = form.replyText.value;
+                        if(replyText.trim() !== '') {
+                            const convoRef = doc(db, "conversations", conversationId);
+                            await updateDoc(convoRef, {
+                                messages: arrayUnion({
+                                    from: currentUser.uid,
+                                    text: replyText,
+                                    createdAt: new Date(),
+                                })
+                            });
+                            
+                            await createNotification(
+                                recipientId,
+                                currentUser.uid,
+                                'message',
+                                `${currentUser.name} replied to your message.`,
+                                { page: 'messageDetail', id: conversationId }
+                            );
+
+                            form.reset();
+                        }
                         break;
                     }
                     case 'upload-paper-form': {
@@ -1442,6 +2059,7 @@
                             comments: []
                         };
                         await addDoc(collection(db, "papers"), newPaper);
+                        await updateDoc(doc(db, "users", currentUser.uid), { points: increment(100) });
                         form.closest('.fixed').classList.replace('flex', 'hidden');
                         form.reset();
                         showMessage("Success", "Your paper has been submitted!");
@@ -1476,6 +2094,7 @@
                             createdAt: serverTimestamp()
                         };
                         await addDoc(collection(db, "docs"), newDoc);
+                        await updateDoc(doc(db, "users", currentUser.uid), { points: increment(40) });
                         form.closest('.fixed').classList.replace('flex', 'hidden');
                         form.reset();
                         showMessage("Success", "Your content has been uploaded!");
@@ -1493,6 +2112,7 @@
                             createdAt: serverTimestamp()
                         };
                         await addDoc(collection(db, "news"), newNews);
+                        await updateDoc(doc(db, "users", currentUser.uid), { points: increment(10) });
                         form.closest('.fixed').classList.replace('flex', 'hidden');
                         form.reset();
                         showMessage("Success", "Your news has been posted!");
@@ -1515,6 +2135,135 @@
                         navigateTo('team');
                         break;
                     }
+                    case 'add-project-form': {
+                        if (!currentUser) return;
+                        const form = e.target;
+                        const newProject = {
+                            title: form.projectTitle.value,
+                            shortDescription: form.shortDescription.value,
+                            teamMembers: form.teamMembers.value.split(',').map(s => s.trim()),
+                            tags: form.tags.value.split(',').map(s => s.trim()),
+                            fullDetails: form.fullDetails.value,
+                            authorId: currentUser.uid,
+                            createdAt: serverTimestamp()
+                        };
+                        await addDoc(collection(db, "projects"), newProject);
+                        form.closest('.fixed').classList.replace('flex', 'hidden');
+                        form.reset();
+                        showMessage("Success", "Your project has been added!");
+                        navigateTo('projects');
+                        break;
+                    }
+                    case 'post-announcement-form': {
+                        if (!currentUser || !currentUser.isMentor) return;
+                        const form = e.target;
+                        const announcementId = form.announcementId.value;
+                        const data = {
+                            title: form.title.value,
+                            content: form.content.value,
+                            authorId: currentUser.uid,
+                            updatedAt: serverTimestamp()
+                        };
+                        if (announcementId) {
+                            await updateDoc(doc(db, "announcements", announcementId), data);
+                            showMessage("Success", "Announcement updated!");
+                        } else {
+                            data.createdAt = serverTimestamp();
+                            await addDoc(collection(db, "announcements"), data);
+                            showMessage("Success", "Announcement posted!");
+                        }
+                        form.closest('.fixed').classList.replace('flex', 'hidden');
+                        form.reset();
+                        navigateTo('announcements');
+                        break;
+                    }
+                    case 'create-challenge-form': {
+                        if (!currentUser || !currentUser.isMentor) return;
+                        const form = e.target;
+                        const title = form.title.value;
+                        const numQuestions = parseInt(form.numQuestions.value);
+                        const questions = [];
+
+                        for(let i = 0; i < numQuestions; i++) {
+                            const questionText = form[`q_${i}_text`].value;
+                            const options = [
+                                form[`q_${i}_opt_0`].value,
+                                form[`q_${i}_opt_1`].value,
+                                form[`q_${i}_opt_2`].value,
+                                form[`q_${i}_opt_3`].value,
+                            ];
+                            const correctAnswer = parseInt(form[`q_${i}_correct`].value);
+                            questions.push({ questionText, options, correctAnswer });
+                        }
+
+                        const newChallenge = {
+                            title,
+                            questions,
+                            creatorId: currentUser.uid,
+                            createdAt: serverTimestamp()
+                        };
+
+                        await addDoc(collection(db, "challenges"), newChallenge);
+                        form.closest('.fixed').classList.replace('flex', 'hidden');
+                        form.reset();
+                        showMessage("Success", "Your challenge has been posted!");
+                        navigateTo('challenges');
+                        break;
+                    }
+                    case 'take-challenge-form': {
+                        if (!currentUser) return;
+                        const form = e.target;
+                        const challengeId = form.dataset.id;
+                        
+                        const challengeRef = doc(db, "challenges", challengeId);
+                        const challengeSnap = await getDoc(challengeRef);
+                        if (!challengeSnap.exists()) return;
+                        
+                        const challenge = challengeSnap.data();
+                        let score = 0;
+                        const userAnswers = [];
+
+                        challenge.questions.forEach((q, index) => {
+                            const selectedOption = form[`question_${index}`].value;
+                            userAnswers[index] = selectedOption ? parseInt(selectedOption) : -1;
+                            if (selectedOption && parseInt(selectedOption) === q.correctAnswer) {
+                                score++;
+                            }
+                        });
+
+                        const pointsGained = score * 3;
+                        await updateDoc(doc(db, "users", currentUser.uid), {
+                            points: increment(pointsGained),
+                            completedChallenges: arrayUnion(challengeId)
+                        });
+                        
+                        // Show results
+                        document.getElementById('challenge-result-title').textContent = `${challenge.title} - Results`;
+                        document.getElementById('challenge-result-score').innerHTML = `You scored <strong class="text-blue-400">${score}/${challenge.questions.length}</strong> and earned <strong class="text-blue-400">${pointsGained}</strong> points!`;
+                        
+                        const resultDetails = document.getElementById('challenge-result-details');
+                        resultDetails.innerHTML = challenge.questions.map((q, index) => {
+                            const userAnswer = userAnswers[index];
+                            const isCorrect = userAnswer === q.correctAnswer;
+                            return `
+                                <div class="p-4 rounded-md ${isCorrect ? 'bg-green-900/50' : 'bg-red-900/50'}">
+                                    <p class="font-semibold">${index + 1}. ${q.questionText}</p>
+                                    <p class="text-sm mt-2">Your answer: ${userAnswer > -1 ? q.options[userAnswer] : 'Not answered'} (${isCorrect ? 'Correct' : 'Incorrect'})</p>
+                                    ${!isCorrect ? `<p class="text-sm mt-1">Correct answer: ${q.options[q.correctAnswer]}</p>` : ''}
+                                </div>
+                            `;
+                        }).join('');
+
+                        document.getElementById('challengeResultModal').classList.replace('hidden', 'flex');
+                        navigateTo('challenges');
+                        break;
+                    }
+                }
+            });
+
+            document.body.addEventListener('change', e => {
+                if (e.target.name === 'numQuestions') {
+                    renderChallengeQuestionFields(parseInt(e.target.value));
                 }
             });
 
